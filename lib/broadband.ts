@@ -1,4 +1,5 @@
 import { sampleResults } from "@/data/sample-results";
+import { createSupabaseClient } from "@/lib/supabase";
 import type { BroadbandLookupResult, GeocodeResult, ProviderPlan } from "./types";
 
 const CENSUS_GEOCODER_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
@@ -25,6 +26,28 @@ type BroadbandMapProvider = {
 
 type BroadbandMapResponse = {
   providers?: BroadbandMapProvider[];
+};
+
+type CatalogPlanRow = {
+  slug: string;
+  name: string;
+  provider_id: string | null;
+  technology: string;
+  transport_type: string | null;
+  max_download_mbps: number | null;
+  max_upload_mbps: number | null;
+  estimated_monthly_price: number | string | null;
+  estimated_latency_ms: number | null;
+  contract_required: boolean | null;
+  referral_url: string | null;
+  availability_notes: string | null;
+  source: string | null;
+};
+
+type CatalogProviderRow = {
+  id: string;
+  slug: string;
+  name: string;
 };
 
 export async function lookupBroadbandByAddress(address: string): Promise<BroadbandLookupResult> {
@@ -121,13 +144,80 @@ export async function lookupProvidersByCoordinates(lat: number, lng: number): Pr
     }));
 }
 
-function fallbackResult(addressLabel: string, reason: string): BroadbandLookupResult {
+async function fallbackResult(addressLabel: string, reason: string): Promise<BroadbandLookupResult> {
+  const catalogPlans = await loadCatalogPlans();
+
   return {
     ...sampleResults,
     addressLabel,
     source: "fallback",
+    providers: catalogPlans.length > 0 ? catalogPlans : sampleResults.providers,
     notices: [{ level: "warning", message: reason }]
   };
+}
+
+async function loadCatalogPlans(): Promise<ProviderPlan[]> {
+  const supabase = createSupabaseClient();
+  if (!supabase) return [];
+
+  const [{ data: plans, error: plansError }, { data: providers, error: providersError }] = await Promise.all([
+    supabase
+      .from("plans")
+      .select(
+        "slug,name,provider_id,technology,transport_type,max_download_mbps,max_upload_mbps,estimated_monthly_price,estimated_latency_ms,contract_required,referral_url,availability_notes,source"
+      )
+      .eq("active", true)
+      .order("max_download_mbps", { ascending: false }),
+    supabase.from("providers").select("id,slug,name").eq("active", true)
+  ]);
+
+  if (plansError || providersError) {
+    console.error("loadCatalogPlans failed", plansError ?? providersError);
+    return [];
+  }
+
+  const providerById = new Map((providers as CatalogProviderRow[] | null ?? []).map((provider) => [provider.id, provider]));
+
+  return (plans as CatalogPlanRow[] | null ?? []).map((plan) => {
+    const provider = plan.provider_id ? providerById.get(plan.provider_id) : undefined;
+    const providerName = provider?.name ?? "Unknown provider";
+
+    return {
+      planId: plan.slug,
+      providerId: provider?.slug ?? plan.provider_id ?? undefined,
+      name: providerName,
+      providerName,
+      planName: plan.name,
+      technology: plan.technology,
+      transportType: normalizeTransportType(plan.transport_type),
+      maxDownloadMbps: Number(plan.max_download_mbps ?? 0),
+      maxUploadMbps: Number(plan.max_upload_mbps ?? 0),
+      estimatedMonthlyPrice:
+        plan.estimated_monthly_price === null ? undefined : Number(plan.estimated_monthly_price),
+      estimatedLatencyMs: plan.estimated_latency_ms ?? undefined,
+      notes: plan.availability_notes ?? undefined,
+      referralUrl: plan.referral_url ?? providerReferralUrl(providerName),
+      contractRequired: Boolean(plan.contract_required),
+      source: "sample"
+    };
+  });
+}
+
+function normalizeTransportType(input: string | null | undefined): ProviderPlan["transportType"] {
+  if (
+    input === "fiber" ||
+    input === "cable" ||
+    input === "fixed-wireless" ||
+    input === "5g-home" ||
+    input === "dsl" ||
+    input === "satellite" ||
+    input === "leo-satellite" ||
+    input === "unknown"
+  ) {
+    return input;
+  }
+
+  return "unknown";
 }
 
 function providerReferralUrl(providerName?: string) {
