@@ -2,7 +2,7 @@
 -- Run manually in Supabase SQL Editor when ready.
 --
 -- Security posture for Week 2 MVP:
--- - The app uses ONLY NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.
+-- - The app uses ONLY NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY.
 -- - No service role key, secret key, or database password is required for app runtime.
 -- - Anonymous inserts are allowed for lead/search capture only.
 -- - Anonymous reads are allowed only for active public provider/plan catalog rows.

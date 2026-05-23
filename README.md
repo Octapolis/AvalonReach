@@ -31,7 +31,7 @@ npm install
 npm run dev
 ```
 
-Copy `.env.example` to `.env.local` and add the public Supabase URL, publishable key, and project ref. Do not add service role keys unless a specific server-side admin task is approved.
+Copy `.env.example` to `.env.local` and add the public Supabase URL, anon key, and project ref. Do not add service role keys unless a specific server-side admin task is approved.
 
 ## Week 2 digital evidence
 

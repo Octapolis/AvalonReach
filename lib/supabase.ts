@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabasePublishableKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 /**
  * Public Supabase client for AvalonReach.
@@ -19,4 +20,4 @@ export function createSupabaseClient() {
   });
 }
 
-export const supabaseProjectRef = process.env.SUPABASE_PROJECT_REF;
+export const supabaseProjectRef = process.env.SUPABASE_PROJECT_REF ?? process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF;

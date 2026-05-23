@@ -33,8 +33,8 @@ Capture these views before submitting:
 The app uses these public Supabase environment variables only:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `SUPABASE_PROJECT_REF`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_PROJECT_REF`
 
 No service role key, database password, or Supabase secret key is required for the current Week 2 MVP scaffold.
 
