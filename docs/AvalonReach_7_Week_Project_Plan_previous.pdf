@@ -1,0 +1,362 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 3210 >>
+stream
+BT
+/F2 18 Tf 54 736 Td (7-Week Build Roadmap) Tj
+-54 -736 Td
+/F1 10.5 Tf 54 698 Td (Project: AvalonReach ) Tj
+-54 -698 Td
+/F1 10.5 Tf 54 684 Td (Course: CMIT 450) Tj
+-54 -684 Td
+/F1 10.5 Tf 54 670 Td (Status anchor: Week 1 ends today. The project already has a working Next.js/TypeScript) Tj
+-54 -670 Td
+/F1 10.5 Tf 54 656 Td (  app, search/results flow, live-data seam, lead capture route, provider handoff route,) Tj
+-54 -656 Td
+/F1 10.5 Tf 54 642 Td (  dashboard placeholder, privacy/terms pages, and passing typecheck/build.) Tj
+-54 -642 Td
+/F2 13.5 Tf 54 614 Td (Target Milestones) Tj
+-54 -614 Td
+/F1 10.5 Tf 54 586 Td (? Week 3: Public V1 launched on Vercel with real address lookup, lead capture, and a) Tj
+-54 -586 Td
+/F1 10.5 Tf 54 572 Td (    demo-ready user flow.) Tj
+-54 -572 Td
+/F1 10.5 Tf 54 558 Td (? Week 6: Full course/product scope complete: database, referrals/admin-ready data,) Tj
+-54 -558 Td
+/F1 10.5 Tf 54 544 Td (    saved-results/dashboard flow, polish, tests, and documentation.) Tj
+-54 -544 Td
+/F1 10.5 Tf 54 530 Td (? Week 7: Buffer, presentation, screenshots, final report, and optional stretch polish) Tj
+-54 -530 Td
+/F1 10.5 Tf 54 516 Td (    only.) Tj
+-54 -516 Td
+/F2 13.5 Tf 54 488 Td (Week 1: Foundation ? COMPLETE / LOCKED) Tj
+-54 -488 Td
+/F1 10.5 Tf 54 460 Td (Goal: Establish the product, stack, and working core demo.) Tj
+-54 -460 Td
+/F1 10.5 Tf 54 438 Td (Completed:) Tj
+-54 -438 Td
+/F1 10.5 Tf 54 424 Td (? Next.js + TypeScript app scaffolded.) Tj
+-54 -424 Td
+/F1 10.5 Tf 54 410 Td (? Landing page with address search.) Tj
+-54 -410 Td
+/F1 10.5 Tf 54 396 Td (? Results flow with ranked provider cards.) Tj
+-54 -396 Td
+/F1 10.5 Tf 54 382 Td (? Priority modes started: best value, fastest, cheapest, upload, gaming.) Tj
+-54 -382 Td
+/F1 10.5 Tf 54 368 Td (? Lead capture form and API route added.) Tj
+-54 -368 Td
+/F1 10.5 Tf 54 354 Td (? Search API route added.) Tj
+-54 -354 Td
+/F1 10.5 Tf 54 340 Td (? Live lookup integration seam added with sample fallback data.) Tj
+-54 -340 Td
+/F1 10.5 Tf 54 326 Td (? Supabase-ready persistence helpers/schema direction added.) Tj
+-54 -326 Td
+/F1 10.5 Tf 54 312 Td (? Privacy, terms, provider handoff, dashboard placeholder, launch checklist, and) Tj
+-54 -312 Td
+/F1 10.5 Tf 54 298 Td (    project docs added.) Tj
+-54 -298 Td
+/F1 10.5 Tf 54 284 Td (? npm run typecheck passes.) Tj
+-54 -284 Td
+/F1 10.5 Tf 54 270 Td (? npm run build passes.) Tj
+-54 -270 Td
+/F1 10.5 Tf 54 248 Td (Week 1 exit criteria: satisfied.) Tj
+-54 -248 Td
+/F2 13.5 Tf 54 220 Td (Week 2: Data + Launch Infrastructure) Tj
+-54 -220 Td
+/F1 10.5 Tf 54 192 Td (Goal: Convert the demo into a deployable V1 with durable storage and production) Tj
+-54 -192 Td
+/F1 10.5 Tf 54 178 Td (  configuration.) Tj
+-54 -178 Td
+/F1 10.5 Tf 54 156 Td (Deliverables:) Tj
+-54 -156 Td
+/F1 10.5 Tf 54 142 Td (? Create Supabase project.) Tj
+-54 -142 Td
+/F1 10.5 Tf 54 128 Td (? Add/verify database schema for:) Tj
+-54 -128 Td
+/F1 10.5 Tf 54 114 Td (  - leads) Tj
+-54 -114 Td
+/F1 10.5 Tf 54 100 Td (  - search history) Tj
+-54 -100 Td
+/F1 10.5 Tf 54 86 Td (  - saved results) Tj
+-54 -86 Td
+/F1 10.5 Tf 54 72 Td (  - provider referral links) Tj
+-54 -72 Td
+/F1 8 Tf 502 30 Td (Page 1 of 4) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3409 >>
+stream
+BT
+/F1 10.5 Tf 54 740 Td (? Connect lead capture to Supabase in production mode.) Tj
+-54 -740 Td
+/F1 10.5 Tf 54 726 Td (? Persist searches/results where keys are available.) Tj
+-54 -726 Td
+/F1 10.5 Tf 54 712 Td (? Add seed data for first referral/provider links.) Tj
+-54 -712 Td
+/F1 10.5 Tf 54 698 Td (? Finalize environment variable checklist for local + Vercel.) Tj
+-54 -698 Td
+/F1 10.5 Tf 54 684 Td (? Improve error states for unavailable lookup/API failure.) Tj
+-54 -684 Td
+/F1 10.5 Tf 54 670 Td (? Test 5?10 real addresses with sample/live fallback behavior.) Tj
+-54 -670 Td
+/F1 10.5 Tf 54 656 Td (? Write short Week 2 course update.) Tj
+-54 -656 Td
+/F1 10.5 Tf 54 634 Td (Exit criteria: a production deploy can store leads/searches and the app is ready for) Tj
+-54 -634 Td
+/F1 10.5 Tf 54 620 Td (  public V1 launch work.) Tj
+-54 -620 Td
+/F2 13.5 Tf 54 592 Td (Week 3: Public V1 Launch) Tj
+-54 -592 Td
+/F1 10.5 Tf 54 564 Td (Goal: Fully launch the first public version.) Tj
+-54 -564 Td
+/F1 10.5 Tf 54 542 Td (Deliverables:) Tj
+-54 -542 Td
+/F1 10.5 Tf 54 528 Td (? Deploy to Vercel.) Tj
+-54 -528 Td
+/F1 10.5 Tf 54 514 Td (? Configure domain or stable public Vercel URL.) Tj
+-54 -514 Td
+/F1 10.5 Tf 54 500 Td (? Enable live broadband lookup where API/data access is available.) Tj
+-54 -500 Td
+/F1 10.5 Tf 54 486 Td (? Keep sample fallback clearly labeled if live data is incomplete.) Tj
+-54 -486 Td
+/F1 10.5 Tf 54 472 Td (? Verify full user journey:) Tj
+-54 -472 Td
+/F1 10.5 Tf 54 458 Td (  1. user enters address) Tj
+-54 -458 Td
+/F1 10.5 Tf 54 444 Td (  2. sees provider results) Tj
+-54 -444 Td
+/F1 10.5 Tf 54 430 Td (  3. selects priority) Tj
+-54 -430 Td
+/F1 10.5 Tf 54 416 Td (  4. gets recommendation) Tj
+-54 -416 Td
+/F1 10.5 Tf 54 402 Td (  5. submits lead/contact form) Tj
+-54 -402 Td
+/F1 10.5 Tf 54 388 Td (  6. can click provider handoff/referral action) Tj
+-54 -388 Td
+/F1 10.5 Tf 54 374 Td (? Add production analytics/logging-lite if available.) Tj
+-54 -374 Td
+/F1 10.5 Tf 54 360 Td (? Confirm privacy/terms links and contact/consent language.) Tj
+-54 -360 Td
+/F1 10.5 Tf 54 346 Td (? Capture launch screenshots for CMIT 450.) Tj
+-54 -346 Td
+/F1 10.5 Tf 54 324 Td (Exit criteria: public V1 is online and demo-ready. This is the official launch) Tj
+-54 -324 Td
+/F1 10.5 Tf 54 310 Td (  milestone.) Tj
+-54 -310 Td
+/F2 13.5 Tf 54 282 Td (Week 4: Recommendation Engine V2) Tj
+-54 -282 Td
+/F1 10.5 Tf 54 254 Td (Goal: Make the recommendation logic strong enough to feel useful rather than just) Tj
+-54 -254 Td
+/F1 10.5 Tf 54 240 Td (  decorative.) Tj
+-54 -240 Td
+/F1 10.5 Tf 54 218 Td (Deliverables:) Tj
+-54 -218 Td
+/F1 10.5 Tf 54 204 Td (? Improve scoring weights by priority:) Tj
+-54 -204 Td
+/F1 10.5 Tf 54 190 Td (  - best value) Tj
+-54 -190 Td
+/F1 10.5 Tf 54 176 Td (  - cheapest) Tj
+-54 -176 Td
+/F1 10.5 Tf 54 162 Td (  - fastest download) Tj
+-54 -162 Td
+/F1 10.5 Tf 54 148 Td (  - best upload) Tj
+-54 -148 Td
+/F1 10.5 Tf 54 134 Td (  - gaming/low-latency proxy) Tj
+-54 -134 Td
+/F1 10.5 Tf 54 120 Td (? Add clear recommendation explanation copy.) Tj
+-54 -120 Td
+/F1 10.5 Tf 54 106 Td (? Show confidence/data-source notes on results.) Tj
+-54 -106 Td
+/F1 10.5 Tf 54 92 Td (? Improve sorting, badges, and comparison clarity.) Tj
+-54 -92 Td
+/F1 10.5 Tf 54 78 Td (? Add unit-style test cases or documented test scenarios for the scoring algorithm.) Tj
+-54 -78 Td
+/F1 8 Tf 502 30 Td (Page 2 of 4) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 3228 >>
+stream
+BT
+/F1 10.5 Tf 54 740 Td (? Write Week 4 progress note with screenshots.) Tj
+-54 -740 Td
+/F1 10.5 Tf 54 718 Td (Exit criteria: recommendations are explainable, repeatable, and defensible for the) Tj
+-54 -718 Td
+/F1 10.5 Tf 54 704 Td (  course demo.) Tj
+-54 -704 Td
+/F2 13.5 Tf 54 676 Td (Week 5: Accounts / Saved Results / Dashboard) Tj
+-54 -676 Td
+/F1 10.5 Tf 54 648 Td (Goal: Add the user-retention layer that turns the site from a one-page demo into a) Tj
+-54 -648 Td
+/F1 10.5 Tf 54 634 Td (  real app.) Tj
+-54 -634 Td
+/F1 10.5 Tf 54 612 Td (Deliverables:) Tj
+-54 -612 Td
+/F1 10.5 Tf 54 598 Td (? Implement Supabase auth if time remains reasonable; otherwise use email-based saved-) Tj
+-54 -598 Td
+/F1 10.5 Tf 54 584 Td (    search lookup.) Tj
+-54 -584 Td
+/F1 10.5 Tf 54 570 Td (? Build dashboard/saved-results page beyond placeholder.) Tj
+-54 -570 Td
+/F1 10.5 Tf 54 556 Td (? Let users save a search or request follow-up.) Tj
+-54 -556 Td
+/F1 10.5 Tf 54 542 Td (? Add basic email/results workflow placeholder or documented integration point.) Tj
+-54 -542 Td
+/F1 10.5 Tf 54 528 Td (? Improve mobile responsiveness and empty/loading states.) Tj
+-54 -528 Td
+/F1 10.5 Tf 54 514 Td (? Write Week 5 progress note.) Tj
+-54 -514 Td
+/F1 10.5 Tf 54 492 Td (Exit criteria: users have a reason to return, and saved-search/dashboard behavior is) Tj
+-54 -492 Td
+/F1 10.5 Tf 54 478 Td (  demonstrable.) Tj
+-54 -478 Td
+/F2 13.5 Tf 54 450 Td (Week 6: Full Completion / Final Product Scope) Tj
+-54 -450 Td
+/F1 10.5 Tf 54 422 Td (Goal: Finish the course/product scope before the final week.) Tj
+-54 -422 Td
+/F1 10.5 Tf 54 400 Td (Deliverables:) Tj
+-54 -400 Td
+/F1 10.5 Tf 54 386 Td (? Referral/admin-ready provider data table or seed script.) Tj
+-54 -386 Td
+/F1 10.5 Tf 54 372 Td (? Provider handoff/referral links working for top providers or documented) Tj
+-54 -372 Td
+/F1 10.5 Tf 54 358 Td (    placeholders.) Tj
+-54 -358 Td
+/F1 10.5 Tf 54 344 Td (? Admin data view, lightweight admin route, or database-management workflow) Tj
+-54 -344 Td
+/F1 10.5 Tf 54 330 Td (    documented.) Tj
+-54 -330 Td
+/F1 10.5 Tf 54 316 Td (? Production hardening:) Tj
+-54 -316 Td
+/F1 10.5 Tf 54 302 Td (  - input validation) Tj
+-54 -302 Td
+/F1 10.5 Tf 54 288 Td (  - error messages) Tj
+-54 -288 Td
+/F1 10.5 Tf 54 274 Td (  - loading states) Tj
+-54 -274 Td
+/F1 10.5 Tf 54 260 Td (  - mobile polish) Tj
+-54 -260 Td
+/F1 10.5 Tf 54 246 Td (  - accessibility pass) Tj
+-54 -246 Td
+/F1 10.5 Tf 54 232 Td (  - environment variable review) Tj
+-54 -232 Td
+/F1 10.5 Tf 54 218 Td (? Final test pass on the deployed site.) Tj
+-54 -218 Td
+/F1 10.5 Tf 54 204 Td (? Finalize README, project brief, launch checklist, and data notes.) Tj
+-54 -204 Td
+/F1 10.5 Tf 54 190 Td (? Prepare final demo script draft.) Tj
+-54 -190 Td
+/F1 10.5 Tf 54 168 Td (Exit criteria: full project is complete by the end of Week 6. Week 7 is not required) Tj
+-54 -168 Td
+/F1 10.5 Tf 54 154 Td (  for core build work.) Tj
+-54 -154 Td
+/F2 13.5 Tf 54 126 Td (Week 7: Presentation + Buffer + Stretch) Tj
+-54 -126 Td
+/F1 10.5 Tf 54 98 Td (Goal: Submit cleanly and use buffer only for polish or surprises.) Tj
+-54 -98 Td
+/F1 10.5 Tf 54 76 Td (Deliverables:) Tj
+-54 -76 Td
+/F1 8 Tf 502 30 Td (Page 3 of 4) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 1641 >>
+stream
+BT
+/F1 10.5 Tf 54 740 Td (? Final presentation/report.) Tj
+-54 -740 Td
+/F1 10.5 Tf 54 726 Td (? Screenshots and short demo walkthrough.) Tj
+-54 -726 Td
+/F1 10.5 Tf 54 712 Td (? Final testing evidence.) Tj
+-54 -712 Td
+/F1 10.5 Tf 54 698 Td (? Optional stretch:) Tj
+-54 -698 Td
+/F1 10.5 Tf 54 684 Td (  - AI recommendation assistant) Tj
+-54 -684 Td
+/F1 10.5 Tf 54 670 Td (  - local market landing pages) Tj
+-54 -670 Td
+/F1 10.5 Tf 54 656 Td (  - better provider enrichment) Tj
+-54 -656 Td
+/F1 10.5 Tf 54 642 Td (  - deal-alert concept mockup) Tj
+-54 -642 Td
+/F1 10.5 Tf 54 620 Td (Exit criteria: CMIT 450 submission is ready, with V1 launched and Week 6 scope) Tj
+-54 -620 Td
+/F1 10.5 Tf 54 606 Td (  complete.) Tj
+-54 -606 Td
+/F2 13.5 Tf 54 578 Td (Locked Scope Rule) Tj
+-54 -578 Td
+/F1 10.5 Tf 54 550 Td (To protect the schedule, anything not needed for Week 3 launch or Week 6 completion is) Tj
+-54 -550 Td
+/F1 10.5 Tf 54 536 Td (  a stretch feature. The core build is:) Tj
+-54 -536 Td
+/F1 10.5 Tf 54 514 Td (1. address search) Tj
+-54 -514 Td
+/F1 10.5 Tf 54 500 Td (2. provider results) Tj
+-54 -500 Td
+/F1 10.5 Tf 54 486 Td (3. priority-based recommendation) Tj
+-54 -486 Td
+/F1 10.5 Tf 54 472 Td (4. lead capture) Tj
+-54 -472 Td
+/F1 10.5 Tf 54 458 Td (5. persistence/database) Tj
+-54 -458 Td
+/F1 10.5 Tf 54 444 Td (6. deployed public site) Tj
+-54 -444 Td
+/F1 10.5 Tf 54 430 Td (7. saved/dashboard or equivalent retention flow) Tj
+-54 -430 Td
+/F1 10.5 Tf 54 416 Td (8. referral/admin-ready provider workflow) Tj
+-54 -416 Td
+/F1 10.5 Tf 54 402 Td (9. final documentation and presentation) Tj
+-54 -402 Td
+/F1 8 Tf 502 30 Td (Page 4 of 4) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 11 0 R >>
+endobj
+xref
+0 13
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000141 00000 n 
+0000000211 00000 n 
+0000000286 00000 n 
+0000003548 00000 n 
+0000003684 00000 n 
+0000007145 00000 n 
+0000007281 00000 n 
+0000010561 00000 n 
+0000010698 00000 n 
+0000012392 00000 n 
+trailer
+<< /Size 13 /Root 1 0 R >>
+startxref
+12530
+%%EOF
