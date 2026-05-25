@@ -20,6 +20,7 @@ export default function HomePage() {
         <aside className="score-card">
           <p className="card-label">Current MVP recommendation</p>
           <h2>{ranked[0]?.name}</h2>
+          <p>{ranked[0]?.priceLabel}</p>
           <p>{ranked[0]?.recommendationReason}</p>
         </aside>
       </section>
@@ -43,6 +44,7 @@ export default function HomePage() {
                 <span>{provider.technology}</span>
               </div>
               <p className="speed">{provider.maxDownloadMbps} Mbps down / {provider.maxUploadMbps} Mbps up</p>
+              <p className="price-line">{provider.priceLabel}</p>
               <p>{provider.recommendationReason}</p>
               <a className="button ghost" href={provider.referralUrl}>Check availability</a>
             </article>

@@ -26,6 +26,8 @@ h3 { margin: 0 0 8px; }
 input, select { width: 100%; border: 1px solid var(--line); background: rgba(0,0,0,.22); color: var(--text); border-radius: 14px; padding: 14px 16px; font: inherit; }
 .button, button { border: 0; background: linear-gradient(135deg, var(--cyan), var(--gold)); color: #06111f; border-radius: 14px; padding: 14px 18px; font-weight: 800; cursor: pointer; display:inline-flex; justify-content:center; }
 .button.ghost { background: transparent; color: var(--cyan); border: 1px solid rgba(98,217,255,.45); margin-top: 12px; }
+.button-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.button-row .button.ghost { margin-top: 0; }
 .score-card { padding: 28px; }
 .card-label { color: var(--gold); font-size: .85rem; font-weight: 800; }
 .section { padding: 44px 0; }
@@ -35,6 +37,7 @@ input, select { width: 100%; border: 1px solid var(--line); background: rgba(0,0
 .provider-topline { display:flex; justify-content:space-between; gap: 12px; align-items:start; }
 .provider-topline span { color: var(--gold); font-size: .85rem; }
 .speed { color: var(--cyan); font-weight: 800; }
+.price-line { color: var(--gold); font-weight: 800; }
 .fine-print { color: var(--muted); font-size: .9rem; }
 .lead-section { display:grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items:start; }
 .lead-form { padding: 18px; display:grid; gap: 12px; }

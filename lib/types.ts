@@ -53,8 +53,10 @@ export type ProviderPlan = {
 };
 
 export type RankedProviderPlan = ProviderPlan & {
-  score: number;
-  valueScore: number;
+  score: number | null;
+  scoreLabel: string;
+  valueScore: number | null;
+  priceLabel: string;
   transportType: TransportType;
   transportLabel: string;
   estimatedLatencyCategory: LatencyCategory;

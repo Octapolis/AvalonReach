@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./styles.css";
 
 export const metadata: Metadata = {
@@ -12,11 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="shell">
           <header className="site-header">
-            <a className="brand" href="/">AvalonReach</a>
+            <Link className="brand" href="/">AvalonReach</Link>
             <nav>
-              <a href="/#how-it-works">How it works</a>
-              <a href="/#lead-capture">Updates</a>
-              <a href="/dashboard">Dashboard</a>
+              <Link href="/#how-it-works">How it works</Link>
+              <Link href="/#lead-capture">Updates</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </nav>
           </header>
           {children}

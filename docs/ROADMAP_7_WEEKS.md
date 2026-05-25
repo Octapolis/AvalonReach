@@ -2,7 +2,7 @@
 
 **Project:** AvalonReach  
 **Course:** CMIT 450  
-**Status anchor:** Week 1 ends today. The project already has a working Next.js/TypeScript app, search/results flow, live-data seam, lead capture route, provider handoff route, dashboard placeholder, privacy/terms pages, and passing typecheck/build.
+**Status anchor:** Week 4 began Monday, 2026-05-25. The public Vercel app launched Saturday, 2026-05-23 at https://avalon-reach.vercel.app/. The project has a working Next.js/TypeScript app, search/results flow, live-data seam, lead capture route, provider handoff route, dashboard placeholder, privacy/terms pages, Supabase schema/seed docs, and passing typecheck/build.
 
 ## Target Milestones
 
@@ -57,6 +57,8 @@
 
 **Goal:** Fully launch the first public version.
 
+**Status:** Public V1 launched on Vercel Saturday, 2026-05-23. Manual testing is still in progress.
+
 **Deliverables:**
 - Deploy to Vercel.
 - Configure domain or stable public Vercel URL.
@@ -78,6 +80,8 @@
 ## Week 4: Recommendation Engine V2
 
 **Goal:** Make the recommendation logic strong enough to feel useful rather than just decorative.
+
+**Status:** In progress. First live test on 2026-05-25 confirmed the deployed app works for a public Philadelphia address, but live data can lack pricing, causing best-value score/copy to degrade.
 
 **Deliverables:**
 - Keep recommendation rules transparent and defensible:

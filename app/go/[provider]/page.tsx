@@ -7,14 +7,17 @@ export default async function ProviderRedirectPage({ params }: { params: Promise
   return (
     <main className="section narrow">
       <p className="eyebrow">Provider handoff</p>
-      <h1>Check availability with {label || "this provider"}</h1>
+      <h1>Confirm availability with {label || "this provider"}</h1>
       <p>
-        V1 placeholder: this page will route to provider-specific referral or affiliate links once they are configured.
+        AvalonReach does not have a live referral link for this provider yet. Use this result as a shortlist, then confirm availability, monthly price, promos, fees, and installation details directly with the provider.
       </p>
       <p>
-        For now, capture the user as a lead and show that exact pricing/promos need provider confirmation.
+        This keeps the MVP honest while provider-specific handoff links are being configured.
       </p>
-      <Link className="button" href="/#lead-capture">Get update alerts</Link>
+      <div className="button-row">
+        <Link className="button" href="/#lead-capture">Get update alerts</Link>
+        <Link className="button ghost" href="/">Search another address</Link>
+      </div>
     </main>
   );
 }

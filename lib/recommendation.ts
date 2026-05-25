@@ -61,10 +61,10 @@ const TRANSPORT_PROFILES: Record<TransportType, TransportProfile> = {
 export function rankProviders(providers: ProviderPlan[], priority: UserPriority): RankedProviderPlan[] {
   return providers
     .map((provider) => {
-      const monthlyPrice = provider.estimatedMonthlyPrice ?? Number.POSITIVE_INFINITY;
       const transportType = provider.transportType ?? classifyTransport(provider.technology);
       const profile = TRANSPORT_PROFILES[transportType];
-      const valueScore = provider.maxDownloadMbps / Math.max(monthlyPrice, 1);
+      const valueScore = valueScoreFor(provider);
+      const score = displayScore(provider, priority, valueScore, profile.gamingRank);
 
       return {
         ...provider,
@@ -74,7 +74,9 @@ export function rankProviders(providers: ProviderPlan[], priority: UserPriority)
         estimatedLatencyCategory: provider.estimatedLatencyCategory ?? profile.latencyCategory,
         transportNote: profile.note,
         valueScore,
-        score: displayScore(provider, priority, valueScore, profile.gamingRank),
+        score,
+        scoreLabel: displayScoreLabel(provider, priority, valueScore, score, profile.gamingRank),
+        priceLabel: displayPriceLabel(provider),
         recommendationReason: explain(provider, priority, valueScore, profile)
       };
     })
@@ -111,11 +113,30 @@ export function classifyTransport(technology: string): TransportType {
 }
 
 function compareByPriority(a: RankedProviderPlan, b: RankedProviderPlan, priority: UserPriority) {
-  if (priority === "cheapest") return price(a) - price(b) || b.maxDownloadMbps - a.maxDownloadMbps;
+  if (priority === "cheapest") return compareByPrice(a, b) || b.maxDownloadMbps - a.maxDownloadMbps;
   if (priority === "fastest") return b.maxDownloadMbps - a.maxDownloadMbps || b.maxUploadMbps - a.maxUploadMbps;
   if (priority === "upload") return b.maxUploadMbps - a.maxUploadMbps || b.maxDownloadMbps - a.maxDownloadMbps;
   if (priority === "gaming") return compareGamingAndRemoteWork(a, b);
-  return b.valueScore - a.valueScore || price(a) - price(b);
+  return compareBestValue(a, b);
+}
+
+function compareBestValue(a: RankedProviderPlan, b: RankedProviderPlan) {
+  if (a.valueScore !== null && b.valueScore !== null) return b.valueScore - a.valueScore || compareByPrice(a, b);
+  if (a.valueScore !== null && b.valueScore === null) return -1;
+  if (a.valueScore === null && b.valueScore !== null) return 1;
+
+  return transportQuality(b) - transportQuality(a) || b.maxDownloadMbps - a.maxDownloadMbps || b.maxUploadMbps - a.maxUploadMbps;
+}
+
+function compareByPrice(a: ProviderPlan, b: ProviderPlan) {
+  const aPrice = price(a);
+  const bPrice = price(b);
+
+  if (aPrice !== null && bPrice !== null) return aPrice - bPrice;
+  if (aPrice !== null && bPrice === null) return -1;
+  if (aPrice === null && bPrice !== null) return 1;
+
+  return 0;
 }
 
 function compareGamingAndRemoteWork(a: RankedProviderPlan, b: RankedProviderPlan) {
@@ -132,32 +153,67 @@ function compareGamingAndRemoteWork(a: RankedProviderPlan, b: RankedProviderPlan
   return gamingTransportScore(b) - gamingTransportScore(a) || b.maxUploadMbps - a.maxUploadMbps || b.maxDownloadMbps - a.maxDownloadMbps;
 }
 
-function displayScore(provider: ProviderPlan, priority: UserPriority, valueScore: number, gamingRank: number) {
-  if (priority === "cheapest") return Number.isFinite(price(provider)) ? Math.round(price(provider)) : 0;
+function displayScore(provider: ProviderPlan, priority: UserPriority, valueScore: number | null, gamingRank: number) {
+  const monthlyPrice = price(provider);
+
+  if (priority === "cheapest") return monthlyPrice !== null ? Math.round(monthlyPrice) : null;
   if (priority === "fastest") return provider.maxDownloadMbps;
   if (priority === "upload") return provider.maxUploadMbps;
   if (priority === "gaming") return typeof provider.estimatedLatencyMs === "number" ? provider.estimatedLatencyMs : gamingRank;
-  return Math.round(valueScore * 10) / 10;
+  return valueScore !== null ? Math.round(valueScore * 10) / 10 : null;
+}
+
+function displayScoreLabel(
+  provider: ProviderPlan,
+  priority: UserPriority,
+  valueScore: number | null,
+  score: number | null,
+  gamingRank: number
+) {
+  if (priority === "cheapest") return price(provider) !== null ? `$${score}/mo` : "Price unavailable";
+  if (priority === "fastest") return `${provider.maxDownloadMbps} Mbps down`;
+  if (priority === "upload") return `${provider.maxUploadMbps} Mbps up`;
+  if (priority === "gaming") {
+    return typeof provider.estimatedLatencyMs === "number" ? `${provider.estimatedLatencyMs} ms latency` : `Connection fit ${gamingRank}/7`;
+  }
+  return valueScore !== null ? `${valueScore.toFixed(1)} Mbps/$` : "Price unavailable";
+}
+
+function displayPriceLabel(provider: ProviderPlan) {
+  const monthlyPrice = price(provider);
+  return monthlyPrice !== null ? `Listed price: $${monthlyPrice}/mo` : "Listed price: unavailable - confirm with provider";
 }
 
 function gamingTransportScore(provider: RankedProviderPlan) {
-  return TRANSPORT_PROFILES[provider.transportType].gamingRank * 1000 + provider.maxUploadMbps + provider.maxDownloadMbps / 100;
+  return transportQuality(provider) * 1000 + provider.maxUploadMbps + provider.maxDownloadMbps / 100;
+}
+
+function transportQuality(provider: Pick<RankedProviderPlan, "transportType">) {
+  return TRANSPORT_PROFILES[provider.transportType].gamingRank;
 }
 
 function price(provider: ProviderPlan) {
-  return provider.estimatedMonthlyPrice ?? Number.POSITIVE_INFINITY;
+  return provider.estimatedMonthlyPrice ?? null;
 }
 
-function explain(provider: ProviderPlan, priority: UserPriority, valueScore: number, profile: TransportProfile): string {
-  const planLabel = provider.planName ? `${provider.name} ${provider.planName}` : provider.name;
+function valueScoreFor(provider: ProviderPlan) {
+  const monthlyPrice = price(provider);
+  return monthlyPrice !== null ? provider.maxDownloadMbps / Math.max(monthlyPrice, 1) : null;
+}
+
+function explain(provider: ProviderPlan, priority: UserPriority, valueScore: number | null, profile: TransportProfile): string {
+  const planLabel = provider.planName ? `${provider.name} ${provider.planName}` : `${provider.name} ${profile.label}`;
 
   if (priority === "fastest") {
     return `${planLabel} ranks highly because it advertises up to ${provider.maxDownloadMbps} Mbps download.`;
   }
 
   if (priority === "cheapest") {
-    const priceText = Number.isFinite(price(provider)) ? `$${provider.estimatedMonthlyPrice}/mo` : "price not listed";
-    return `${planLabel} ranks on budget because its listed monthly price is ${priceText}.`;
+    const monthlyPrice = price(provider);
+    if (monthlyPrice === null) {
+      return `${planLabel} does not have listed monthly pricing in the live data yet, so it cannot be confirmed as the cheapest option. Confirm current pricing with the provider.`;
+    }
+    return `${planLabel} ranks on budget because its listed monthly price is $${monthlyPrice}/mo.`;
   }
 
   if (priority === "upload") {
@@ -169,5 +225,9 @@ function explain(provider: ProviderPlan, priority: UserPriority, valueScore: num
     return `${planLabel} uses ${profile.label}, which is ranked for gaming/remote work by latency and connection stability.${latencyText} ${profile.note}`;
   }
 
-  return `${planLabel} has a value score of ${valueScore.toFixed(1)} Mbps per dollar based on ${provider.maxDownloadMbps} Mbps download and $${provider.estimatedMonthlyPrice ?? "unknown"}/mo pricing.`;
+  if (valueScore === null) {
+    return `${planLabel} is ranked using advertised speed and connection type because live monthly pricing is not available yet. Confirm current pricing before comparing value.`;
+  }
+
+  return `${planLabel} has a value score of ${valueScore.toFixed(1)} Mbps per dollar based on ${provider.maxDownloadMbps} Mbps download and $${provider.estimatedMonthlyPrice}/mo pricing.`;
 }
