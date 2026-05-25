@@ -131,6 +131,8 @@ Status: Pending
 
 Use public, non-private addresses. Prefer civic, commercial, campus, library, or public landmark addresses.
 
+Detailed checklist: `public-address-evidence-checklist.md`
+
 Suggested address mix:
 
 | Label | Address | Reason | Status |
@@ -167,6 +169,8 @@ Testing is complete enough to start Week 4 upgrades when:
 - Known issues and suggestions are updated from the test results.
 
 ## Post-Deploy Smoke Script
+
+Deployment/retest runbook: `vercel-redeploy-retest-runbook.md`
 
 After Vercel deploys the latest GitHub commit, run:
 

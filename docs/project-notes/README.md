@@ -51,6 +51,8 @@ Source reports:
 Testing:
 
 - `testing/week-04-existing-feature-test-plan.md`
+- `testing/public-address-evidence-checklist.md`
+- `testing/vercel-redeploy-retest-runbook.md`
 
 Rule of thumb:
 
