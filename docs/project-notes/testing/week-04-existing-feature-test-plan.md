@@ -28,6 +28,7 @@ Status: Complete
 | TypeScript | `npm run typecheck` | Pass | No TypeScript errors. |
 | Production build | `npm run build` | Pass | Next build completes. |
 | Lint | `npm run lint` | Pass | Repaired script from `next lint` to `eslint .`; added `eslint.config.mjs`; fixed layout links. |
+| Deployment smoke | `npm run smoke:deploy -- <base-url>` | Added locally | Verifies the post-deploy fixes against live or local base URL. |
 
 ## Phase 2 - Live Smoke Routes
 
@@ -164,3 +165,27 @@ Testing is complete enough to start Week 4 upgrades when:
 - Lead capture has either been tested with an approved test email or explicitly deferred.
 - At least five public addresses have been tested and documented.
 - Known issues and suggestions are updated from the test results.
+
+## Post-Deploy Smoke Script
+
+After Vercel deploys the latest GitHub commit, run:
+
+```bash
+npm run smoke:deploy
+```
+
+To test a local server instead:
+
+```bash
+npm run dev -- --hostname 127.0.0.1 --port 3015
+npm run smoke:deploy -- http://127.0.0.1:3015
+```
+
+The smoke script checks:
+
+- homepage/results/legal/handoff routes
+- POST-only search API behavior
+- missing-price score labels
+- explicit listed-price lines
+- duplicate provider technology labels
+- provider handoff honesty copy
