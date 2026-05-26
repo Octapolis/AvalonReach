@@ -2,18 +2,55 @@
 
 Purpose: get the pushed AvalonReach fixes live, then verify production with repeatable checks.
 
-Current pushed app-fix commit: `908bfdc`  
+Current pushed app-fix commit: `59d1458`  
 Current local smoke-test commit: `1e612f8`  
 Production URL: https://avalon-reach.vercel.app/
 
 ## Situation
 
-GitHub `main` has the app fixes from commit `908bfdc`, but production was still serving the older build during the last check on 2026-05-25.
+GitHub `main` has the app fixes from commit `59d1458`. Vercel blocked earlier pushed commits when the Git author was `Ava <ava@openclaw.local>`, because that identity was treated as an external/team author instead of the GitHub project owner.
 
 Vercel CLI on the OpenClaw box does not have saved credentials. It requested device login, so either:
 
 - Alex redeploys from the Vercel dashboard, or
 - Alex completes Vercel device login for this environment, then Ava can deploy from CLI.
+
+## GitHub Author Preflight
+
+Run this before creating any deployment-triggering commit. Vercel must see the commit author as the GitHub owner identity.
+
+```bash
+cd /home/ubuntu/.openclaw/workspace/projects/avalonreach
+git config user.name "Octapolis"
+git config user.email "181661051+Octapolis@users.noreply.github.com"
+git config user.name
+git config user.email
+```
+
+The final two commands should print:
+
+```text
+Octapolis
+181661051+Octapolis@users.noreply.github.com
+```
+
+After committing, verify the latest commit author before pushing:
+
+```bash
+git log -1 --format='%h %an <%ae> %s'
+```
+
+If the author is wrong, fix the commit before pushing:
+
+```bash
+GIT_AUTHOR_NAME="Octapolis" \
+GIT_AUTHOR_EMAIL="181661051+Octapolis@users.noreply.github.com" \
+GIT_COMMITTER_NAME="Octapolis" \
+GIT_COMMITTER_EMAIL="181661051+Octapolis@users.noreply.github.com" \
+git commit --amend --no-edit --reset-author
+```
+
+Then verify again with `git log -1 --format='%h %an <%ae> %s'`.
 
 ## Dashboard Redeploy Path
 
@@ -21,7 +58,7 @@ Vercel CLI on the OpenClaw box does not have saved credentials. It requested dev
 2. Open the AvalonReach project.
 3. Go to Deployments.
 4. Find the latest GitHub commit on `main`.
-5. Confirm the deployment uses commit `908bfdc` or newer.
+5. Confirm the deployment uses commit `59d1458` or newer.
 6. Click Redeploy if the latest commit is not already deployed.
 7. Wait for deployment to finish successfully.
 8. Tell Ava deployment is complete.
@@ -112,3 +149,32 @@ Then update:
 - `progress/known-issues.md`
 - `working-notes/daily/YYYY-MM-DD.md`
 - `week-04-status.md`
+
+## If Vercel Blocks The Commit As A Team Project
+
+This usually means the pushed Git commit author is not the GitHub owner identity Vercel expects.
+
+1. Check the latest commit author:
+
+```bash
+git log -1 --format='%h %an <%ae> %s'
+```
+
+2. If it is not `Octapolis <181661051+Octapolis@users.noreply.github.com>`, amend it:
+
+```bash
+GIT_AUTHOR_NAME="Octapolis" \
+GIT_AUTHOR_EMAIL="181661051+Octapolis@users.noreply.github.com" \
+GIT_COMMITTER_NAME="Octapolis" \
+GIT_COMMITTER_EMAIL="181661051+Octapolis@users.noreply.github.com" \
+git commit --amend --no-edit --reset-author
+```
+
+3. Push the rewritten commit to both GitHub repos:
+
+```bash
+git push public HEAD:main --force-with-lease
+git push private HEAD:main --force-with-lease
+```
+
+4. Confirm Vercel now sees the rewritten commit as deployable.
