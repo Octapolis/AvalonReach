@@ -26,11 +26,11 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
 
       {ranked.length > 0 ? (
         <div className="provider-grid">
-          {ranked.map((provider) => (
+          {ranked.map((provider, index) => (
             <article className="provider-card" key={`${provider.name}-${provider.technology}-${provider.providerId ?? "none"}`}>
               <div className="provider-topline">
                 <h3>{provider.planName ?? `${provider.name} ${provider.transportLabel}`}</h3>
-                <span>{provider.scoreLabel}</span>
+                <span>{index === 0 ? "Recommended" : provider.scoreLabel}</span>
               </div>
               <p className="speed">{provider.maxDownloadMbps} Mbps down / {provider.maxUploadMbps} Mbps up</p>
               <p className="price-line">{provider.priceLabel}</p>

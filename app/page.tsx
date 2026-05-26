@@ -18,7 +18,7 @@ export default function HomePage() {
           <SearchForm />
         </div>
         <aside className="score-card">
-          <p className="card-label">Current MVP recommendation</p>
+          <p className="card-label">Example recommendation</p>
           <h2>{ranked[0]?.name}</h2>
           <p>{ranked[0]?.priceLabel}</p>
           <p>{ranked[0]?.recommendationReason}</p>
@@ -35,9 +35,9 @@ export default function HomePage() {
       </section>
 
       <section className="section">
-        <h2>Example result cards</h2>
+        <h2>What results look like</h2>
         <div className="provider-grid">
-          {ranked.map((provider) => (
+          {ranked.slice(0, 3).map((provider) => (
             <article className="provider-card" key={`${provider.name}-${provider.technology}`}>
               <div className="provider-topline">
                 <h3>{provider.name}</h3>
@@ -54,9 +54,9 @@ export default function HomePage() {
 
       <section className="section lead-section" id="lead-capture">
         <div>
-          <p className="eyebrow">Responder list ready from day one</p>
+          <p className="eyebrow">Stay ahead of better deals</p>
           <h2>Send me my results and better-deal alerts.</h2>
-          <p>Phase 1 captures emails, consent, searched location, and what the user wants help with.</p>
+          <p>Get your saved results, plan-change alerts, and follow-up help choosing between close options.</p>
         </div>
         <LeadCaptureForm />
       </section>
