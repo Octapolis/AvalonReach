@@ -1,81 +1,8 @@
 # Known Issues
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 
 ## Open
-
-### AR-I001 - Missing price data makes best-value scoring awkward
-
-Status: Fixed locally / pending deployment  
-Found: 2026-05-25  
-Source: `../working-notes/daily/2026-05-25.md`
-
-Description:
-
-- Live broadband lookup returns speed and technology data but not reliable monthly pricing.
-- In best-value mode, the app can display `0.0 Mbps per dollar` and score `0`, which is misleading or unhelpful.
-- In cheapest mode, when all prices are missing, the app shows score `0` and budget copy even though no listed monthly price exists.
-
-Suggested fix:
-
-- If `estimatedMonthlyPrice` is missing, do not calculate value score.
-- Show "price unavailable" or "pricing must be confirmed."
-- In best-value mode, use a fallback ranking based on speed plus transport quality and clearly explain that pricing is unavailable.
-- In cheapest mode, explain that price data is unavailable and avoid presenting missing-price plans as cheaper.
-
-Local fix:
-
-- `valueScore` is now `null` when monthly price is unavailable.
-- Result cards use `scoreLabel` instead of raw `Score {number}`.
-- Best-value unknown-price plans show `Price unavailable` and explain the speed/connection-type fallback.
-- Cheapest unknown-price plans show `Price unavailable` and explain they cannot be confirmed as cheapest without listed pricing.
-- Local API/results page checks no longer show `0.0 Mbps per dollar` or `Score 0`.
-- Still needs public deployment and live retest before moving to Fixed.
-
-### AR-I002 - Duplicate provider entries can appear across technologies
-
-Status: Fixed locally / pending deployment  
-Found: 2026-05-25  
-Source: `../working-notes/daily/2026-05-25.md`
-
-Description:
-
-- Live results can show the same provider multiple times with different technology labels, such as Xfinity cable and Xfinity fiber.
-
-Suggested fix:
-
-- Keep provider/technology variants as separate results for now.
-- Make the technology distinction more prominent so duplicate provider names are not confusing.
-
-Local fix:
-
-- Live results without a plan name now use provider plus transport label as the card heading, such as `Xfinity Cable / DOCSIS` and `Xfinity Fiber / FTTP`.
-- Recommendation explanations now include the transport label when no plan name exists.
-- Local results page verification shows no bare `Xfinity</h3>` duplicate headings for the baseline address.
-- Still needs public deployment and live retest before moving to Fixed.
-
-### AR-I003 - Provider handoff links are not production referral links yet
-
-Status: Fixed locally / pending deployment  
-Found: 2026-05-23  
-Source: `../working-notes/daily/2026-05-23.md`
-
-Description:
-
-- Provider handoff routes exist, but production referral/provider URLs still need real data.
-
-Suggested fix:
-
-- Add real provider URLs or mark links as demo/sample.
-- Use `provider_links` table for production handoff data.
-
-Local fix:
-
-- Updated `/go/[provider]` user-facing copy to clearly say AvalonReach does not have a live referral link for the provider yet.
-- Added explicit instructions to confirm availability, monthly price, promos, fees, and installation details directly with the provider.
-- Added actions for update alerts and searching another address.
-- Local `/go/verizon` returned HTTP 200 and contained the new handoff copy/actions.
-- Still needs public deployment and live retest before moving to Fixed.
 
 ### AR-I004 - Production Supabase behavior needs verification
 
@@ -127,10 +54,70 @@ Suggested fix:
 - Explain that fastest-plan recommendation is the official MVP story while broader priority modes are existing expanded functionality that need testing and clearer copy.
 - Align `week-04-status.md`, final-report evidence, and UI copy after the decision.
 
+## Fixed
+
+### AR-I001 - Missing price data makes best-value scoring awkward
+
+Status: Fixed  
+Found: 2026-05-25  
+Fixed: 2026-05-26  
+Source: `../working-notes/daily/2026-05-25.md`
+
+Description:
+
+- Live broadband lookup returns speed and technology data but not reliable monthly pricing.
+- In best-value mode, the app previously displayed `0.0 Mbps per dollar` and score `0`, which was misleading.
+- In cheapest mode, missing prices previously looked like budget results even though no listed monthly price existed.
+
+Fix:
+
+- `valueScore` is now `null` when monthly price is unavailable.
+- Result cards use `scoreLabel` instead of raw `Score {number}`.
+- Best-value unknown-price plans show `Price unavailable` and explain the speed/connection-type fallback.
+- Cheapest unknown-price plans show `Price unavailable` and explain they cannot be confirmed as cheapest without listed pricing.
+- Live production smoke test passed on 2026-05-26.
+- Live API retest for `1400 John F Kennedy Blvd, Philadelphia, PA 19107` returned `Price unavailable` for best-value and cheapest, explicit unavailable price labels, and no fake `0.0 Mbps per dollar` copy.
+
+### AR-I002 - Duplicate provider entries can appear across technologies
+
+Status: Fixed  
+Found: 2026-05-25  
+Fixed: 2026-05-26  
+Source: `../working-notes/daily/2026-05-25.md`
+
+Description:
+
+- Live results can show the same provider multiple times with different technology labels, such as Xfinity cable and Xfinity fiber.
+
+Fix:
+
+- Live results without a plan name now use provider plus transport label as the card heading, such as `Xfinity Cable / DOCSIS` and `Xfinity Fiber / FTTP`.
+- Recommendation explanations now include the transport label when no plan name exists.
+- Live production smoke test passed on 2026-05-26 and confirmed Xfinity cable/fiber variants are distinguishable.
+
+### AR-I003 - Provider handoff links are not production referral links yet
+
+Status: Fixed for MVP / production data still future work  
+Found: 2026-05-23  
+Fixed: 2026-05-26  
+Source: `../working-notes/daily/2026-05-23.md`
+
+Description:
+
+- Provider handoff routes exist, but production referral/provider URLs still need real data.
+
+Fix:
+
+- Updated `/go/[provider]` user-facing copy to clearly say AvalonReach does not have a live referral link for the provider yet.
+- Added explicit instructions to confirm availability, monthly price, promos, fees, and installation details directly with the provider.
+- Added actions for update alerts and searching another address.
+- Live production smoke test passed on 2026-05-26 and confirmed `/go/verizon` contains the no-live-referral warning and provider-confirmation instructions.
+
 ### AR-I008 - Price status should be visible on every result card
 
-Status: Fixed locally / pending deployment  
+Status: Fixed  
 Found: 2026-05-25  
+Fixed: 2026-05-26  
 Source: `../working-notes/daily/2026-05-25.md`
 
 Description:
@@ -138,16 +125,13 @@ Description:
 - Price status was only implied through score labels or recommendation explanations.
 - Users needed a dedicated price line on every card to distinguish listed prices from unavailable live pricing.
 
-Local fix:
+Fix:
 
 - Added `priceLabel` to ranked provider results.
 - Result cards now show `Listed price: $X/mo` when pricing exists.
 - Result cards now show `Listed price: unavailable - confirm with provider` when live pricing is missing.
 - Homepage sample cards also show listed prices.
-- Local results page for the baseline live address shows unavailable price labels; homepage sample cards show listed fallback prices.
-- Still needs public deployment and live retest before moving to Fixed.
-
-## Fixed
+- Live production smoke test passed on 2026-05-26 and confirmed explicit unavailable price lines on the results page.
 
 ### AR-I007 - Lint script no longer worked with installed Next version
 

@@ -9,6 +9,35 @@ Week 4 begins with the public Vercel version already launched. The main goal is 
 
 The Week 3 course report framed the public MVP around fastest available plan as the single measurable recommendation variable. Since broader priority modes are already built, Week 4 should not remove or downgrade them. The better path is to test what exists, keep working features, and clarify product copy so fastest-plan remains the official MVP story while broader modes are treated as expanded functionality.
 
+## Live Retest: 2026-05-26
+
+Test URL: https://avalon-reach.vercel.app/
+
+Test address used: `1400 John F Kennedy Blvd, Philadelphia, PA 19107`  
+Reason: public civic/commercial address, not a private home address.
+
+Results:
+
+- Production smoke test passed with `npm run smoke:deploy`.
+- Homepage, results page, provider handoff, privacy page, and terms page returned HTTP 200.
+- `GET /api/search` returned HTTP 405, matching the POST-only route design.
+- `POST /api/search` returned HTTP 200 and 11 provider results for all five priority modes.
+- Best-value now shows `Price unavailable` instead of fake `0.0 Mbps per dollar` copy when live pricing is missing.
+- Cheapest now says it cannot be confirmed as cheapest without listed monthly pricing.
+- Result cards show `Listed price: unavailable - confirm with provider`.
+- Duplicate provider/technology variants are distinguishable, including `Xfinity Cable / DOCSIS` and `Xfinity Fiber / FTTP`.
+- `/go/verizon` explains AvalonReach does not have a live referral link yet and instructs users to confirm availability, monthly price, promos, fees, and installation details directly with the provider.
+
+Priority retest summary:
+
+| Priority | Top result | Production result |
+| --- | --- | --- |
+| Best overall | Verizon Fiber | Pass: missing price handled honestly. |
+| Fastest speed | Verizon Fiber | Pass: `2300 Mbps down`. |
+| Cheapest | Verizon Fiber | Pass: no longer presented as confirmed cheapest without price. |
+| Best upload | Verizon Fiber | Pass: `2300 Mbps up`. |
+| Gaming / low-lag | Verizon Fiber | Pass: `Connection fit 7/7`; copy can still improve later. |
+
 ## Live Test: 2026-05-25
 
 Test URL: https://avalon-reach.vercel.app/
@@ -35,11 +64,11 @@ Results:
 
 ## Issues Found
 
-- Best-value live results show score/value as `0` when live provider data has no price. The app should display "price unavailable" and avoid pretending Mbps-per-dollar scoring is meaningful without a price.
+- Best-value live results previously showed score/value as `0` when live provider data had no price. Fixed and verified on production 2026-05-26.
 - The submitted Week 3 report narrows the MVP story to fastest available plan, while current app/docs still contain broader priority-mode language. Existing built modes should be tested and clarified, not removed.
 - Lint tooling needed repair before it could be used as a reliable baseline check. This is now fixed.
-- Live results can show duplicate providers across technologies, such as Xfinity cable and Xfinity fiber. That may be acceptable, but the UI should make the distinction clearer.
-- Provider handoff links route internally, but real referral/provider URLs still need production data.
+- Live results can show duplicate providers across technologies, such as Xfinity cable and Xfinity fiber. This is acceptable for MVP now that the UI labels the technology distinction clearly.
+- Provider handoff links route internally, but real referral/provider URLs still need production data. The current MVP behavior is acceptable because the handoff page now states the referral link is not live yet.
 - Lead form storage was not tested in this pass to avoid creating unnecessary live lead records.
 
 ## Week 4 Priorities
@@ -59,13 +88,11 @@ The detailed Week 4 existing-feature checklist is tracked in `docs/project-notes
 Priority matrix baseline result:
 
 - `fastest`, `upload`, and `gaming` rank sensibly for the public Philadelphia baseline address.
-- `best-value` fails clarity because missing price data produces score `0` and `0.0 Mbps per dollar`.
-- `cheapest` needs missing-price handling because all prices are unavailable, so the mode cannot honestly rank by budget yet.
-- Local fix completed: best-value and cheapest now show `Price unavailable` and explanatory copy instead of fake zero-value scores. Public deployment still needs retest after the fix is published.
-- Local price clarity fix completed: result cards now show a dedicated listed-price line, either `$X/mo` or unavailable/confirm-with-provider. Public deployment still needs retest after the fix is published.
-- Local duplicate-provider label fix completed: no-plan live results now headline provider plus transport type, such as `Xfinity Cable / DOCSIS` and `Xfinity Fiber / FTTP`. Public deployment still needs retest after the fix is published.
-- Local provider handoff clarity fix completed: `/go/[provider]` now states referral links are not live yet and tells users to confirm availability, prices, promos, fees, and installation details directly with the provider. Public deployment still needs retest after the fix is published.
+- `best-value` and `cheapest` previously failed clarity because missing prices produced zero-value style copy. Fixed and verified on production 2026-05-26.
+- Result cards now show a dedicated listed-price line, either `$X/mo` or unavailable/confirm-with-provider. Verified on production 2026-05-26.
+- No-plan live results now headline provider plus transport type, such as `Xfinity Cable / DOCSIS` and `Xfinity Fiber / FTTP`. Verified on production 2026-05-26.
+- `/go/[provider]` now states referral links are not live yet and tells users to confirm availability, prices, promos, fees, and installation details directly with the provider. Verified on production 2026-05-26.
 
 ## Next Step
 
-Decide the controlled lead-capture test email, then deploy/retest the missing-price, price-line, duplicate-provider-label, and handoff-clarity fixes on the live site.
+Decide the controlled lead-capture test email, verify production Supabase writes, and run the multi-address public evidence pass.

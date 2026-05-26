@@ -6,17 +6,15 @@ Rule: do not remove or downgrade existing features just to match the Week 3 repo
 
 ## Current Test Status
 
-Last updated: 2026-05-25
+Last updated: 2026-05-26
 
 Summary:
 
 - Local baseline gates pass.
 - Live smoke routes pass.
-- Priority matrix has been run once against the baseline public address.
-- Missing-price behavior is fixed locally and needs deployment before live retest.
-- Duplicate provider/technology card labels are fixed locally and need deployment before live retest.
-- Provider handoff clarity is fixed locally and needs deployment before live retest.
-- Price status line is fixed locally and needs deployment before live retest.
+- Production deployment smoke passed on 2026-05-26.
+- Priority matrix has been run against the baseline public address after deployment.
+- Missing-price behavior, duplicate provider/technology card labels, provider handoff clarity, and visible price status lines are fixed on production.
 - Lead capture remains blocked on a controlled test email.
 
 ## Phase 1 - Local Baseline Gates
@@ -28,7 +26,7 @@ Status: Complete
 | TypeScript | `npm run typecheck` | Pass | No TypeScript errors. |
 | Production build | `npm run build` | Pass | Next build completes. |
 | Lint | `npm run lint` | Pass | Repaired script from `next lint` to `eslint .`; added `eslint.config.mjs`; fixed layout links. |
-| Deployment smoke | `npm run smoke:deploy -- <base-url>` | Added locally | Verifies the post-deploy fixes against live or local base URL. |
+| Deployment smoke | `npm run smoke:deploy -- <base-url>` | Pass on production | 2026-05-26: `npm run smoke:deploy` passed for `https://avalon-reach.vercel.app`. |
 
 ## Phase 2 - Live Smoke Routes
 
@@ -55,9 +53,9 @@ Run each priority mode against the same public baseline address first. Then repe
 
 | Priority | UI value | API value | Expected behavior | Status |
 | --- | --- | --- | --- | --- |
-| Best overall | Best overall | `best-value` | Ranks by value when price exists; must explain missing prices honestly. | Fixed locally / retest after deploy |
+| Best overall | Best overall | `best-value` | Ranks by value when price exists; must explain missing prices honestly. | Pass on production |
 | Fastest speed | Fastest speed | `fastest` | Highest download speed should rank first. | Pass |
-| Cheapest | Cheapest | `cheapest` | Lowest listed price should rank first; missing prices should not look like free service. | Fixed locally / retest after deploy |
+| Cheapest | Cheapest | `cheapest` | Lowest listed price should rank first; missing prices should not look like free service. | Pass on production |
 | Best upload | Best upload | `upload` | Highest upload speed should rank first. | Pass |
 | Gaming / low-lag | Gaming / low-lag | `gaming` | Lowest latency or best transport profile should rank first. | Pass / copy can improve |
 
@@ -87,18 +85,28 @@ Local fix verification: 2026-05-25
 | `best-value` | Verizon Fiber, 2300/2300 Mbps | `Price unavailable` | Pass locally. Copy explains ranking uses advertised speed and connection type until pricing is confirmed. |
 | `cheapest` | Verizon Fiber, 2300/2300 Mbps | `Price unavailable` | Pass locally. Copy says it cannot be confirmed as cheapest without listed monthly pricing. |
 
+Production retest: 2026-05-26, address `1400 John F Kennedy Blvd, Philadelphia, PA 19107`
+
+| Priority | Top result | Score label | Result |
+| --- | --- | --- | --- |
+| `best-value` | Verizon Fiber, provider count 11 | `Price unavailable` | Pass. Copy explains ranking uses advertised speed and connection type because live monthly pricing is unavailable. |
+| `fastest` | Verizon Fiber, provider count 11 | `2300 Mbps down` | Pass. |
+| `cheapest` | Verizon Fiber, provider count 11 | `Price unavailable` | Pass. Copy says it cannot be confirmed as cheapest without listed monthly pricing. |
+| `upload` | Verizon Fiber, provider count 11 | `2300 Mbps up` | Pass. |
+| `gaming` | Verizon Fiber, provider count 11 | `Connection fit 7/7` | Pass. Copy can still improve, but behavior is acceptable for the current MVP. |
+
 ## Phase 4 - Data Behavior Checks
 
 Status: Pending
 
 | Behavior | What to confirm | Status |
 | --- | --- | --- |
-| Missing prices | UI does not show fake `0` score or fake Mbps-per-dollar when price is unknown. | Fixed locally; retest on live after deployment |
-| Price line clarity | Every card explicitly says whether a listed monthly price exists. | Fixed locally; retest on live after deployment |
-| Duplicate providers | Same provider across technologies is either clearly labeled or grouped later. | Fixed locally; retest on live after deployment |
+| Missing prices | UI does not show fake `0` score or fake Mbps-per-dollar when price is unknown. | Pass on production |
+| Price line clarity | Every card explicitly says whether a listed monthly price exists. | Pass on production |
+| Duplicate providers | Same provider across technologies is either clearly labeled or grouped later. | Pass on production |
 | Transport labels | Fiber, Cable, Fixed Wireless, Satellite, and LEO Satellite display understandable labels. | Pending |
 | Live/fallback notices | Notice text clearly explains data limitations. | Pending |
-| Provider links | Links work and are clearly demo/generic until production referral URLs are ready. | Fixed locally; retest on live after deployment |
+| Provider links | Links work and are clearly demo/generic until production referral URLs are ready. | Pass on production |
 
 ## Phase 5 - Lead Capture Test
 
@@ -162,8 +170,8 @@ Testing is complete enough to start Week 4 upgrades when:
 
 - Local lint/typecheck/build all pass.
 - Live smoke routes pass.
-- All five priority modes have been tested at least once. Complete for baseline address; repeat after deploying AR-I001 fix.
-- Missing-price behavior is either fixed or clearly tracked as the first upgrade.
+- All five priority modes have been tested at least once after deployment for the baseline address.
+- Missing-price behavior is fixed on production.
 - Lead capture has either been tested with an approved test email or explicitly deferred.
 - At least five public addresses have been tested and documented.
 - Known issues and suggestions are updated from the test results.
