@@ -16,7 +16,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link className="brand" href="/">AvalonReach</Link>
             <nav>
               <Link href="/#how-it-works">How it works</Link>
-              <Link href="/#lead-capture">Updates</Link>
               <Link href="/dashboard">Dashboard</Link>
             </nav>
           </header>

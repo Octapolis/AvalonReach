@@ -96,6 +96,44 @@ export async function lookupBroadbandByAddress(address: string): Promise<Broadba
   }
 }
 
+export async function lookupBroadbandByCoordinates(lat: number, lng: number, addressLabel = "Current location"): Promise<BroadbandLookupResult> {
+  try {
+    const providers = await lookupProvidersByCoordinates(lat, lng);
+    if (providers.length === 0) {
+      return {
+        addressLabel,
+        lat,
+        lng,
+        source: "live",
+        providers: [],
+        notices: [
+          {
+            level: "warning",
+            message: "No providers were returned for this location. Availability data can be incomplete, so confirm with local providers."
+          }
+        ]
+      };
+    }
+
+    return {
+      addressLabel,
+      lat,
+      lng,
+      source: "live",
+      providers,
+      notices: [
+        {
+          level: "info",
+          message: "Availability is based on broadband map data near this location. Exact plans, pricing, and promos should be confirmed with the provider."
+        }
+      ]
+    };
+  } catch (error) {
+    console.error("lookupBroadbandByCoordinates failed", error);
+    return fallbackResult(addressLabel, "Live lookup failed, so sample data is shown while we keep the site usable.");
+  }
+}
+
 export async function geocodeAddress(address: string): Promise<GeocodeResult | null> {
   const url = new URL(CENSUS_GEOCODER_URL);
   url.searchParams.set("address", address);

@@ -1,5 +1,5 @@
 import { LeadCaptureForm } from "@/components/lead-capture-form";
-import { lookupBroadbandByAddress } from "@/lib/broadband";
+import { lookupBroadbandByAddress, lookupBroadbandByCoordinates } from "@/lib/broadband";
 import { saveSearch } from "@/lib/persistence";
 import { rankProviders } from "@/lib/recommendation";
 import type { UserPriority } from "@/lib/types";
@@ -7,8 +7,12 @@ import type { UserPriority } from "@/lib/types";
 export default async function ResultsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
   const address = value(params.address) || "Sample address";
+  const lat = parseCoordinate(value(params.lat));
+  const lng = parseCoordinate(value(params.lng));
   const priority = normalizePriority(value(params.priority));
-  const lookup = await lookupBroadbandByAddress(address);
+  const lookup = lat !== null && lng !== null
+    ? await lookupBroadbandByCoordinates(lat, lng, address)
+    : await lookupBroadbandByAddress(address);
   const ranked = rankProviders(lookup.providers, priority);
   await saveSearch({ lookup, priority, rankedPlans: ranked });
 
@@ -49,10 +53,10 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
       <section className="section lead-section" id="lead-capture">
         <div>
           <p className="eyebrow">Want these results later?</p>
-          <h2>Send me updates for this area.</h2>
-          <p>Leave your email for deal alerts, provider updates, and help choosing a plan.</p>
+          <h2>Save this search.</h2>
+          <p>Keep the results available without making the main comparison page feel crowded.</p>
         </div>
-        <LeadCaptureForm defaultLocation={lookup.addressLabel} />
+        <LeadCaptureForm defaultLocation={lookup.addressLabel} initiallyCollapsed />
       </section>
     </main>
   );
@@ -64,5 +68,11 @@ function value(input: string | string[] | undefined) {
 
 function normalizePriority(input: string | undefined): UserPriority {
   if (input === "fastest" || input === "cheapest" || input === "upload" || input === "gaming" || input === "best-value") return input;
-  return "best-value";
+  return "fastest";
+}
+
+function parseCoordinate(input: string | undefined) {
+  if (!input) return null;
+  const value = Number(input);
+  return Number.isFinite(value) ? value : null;
 }

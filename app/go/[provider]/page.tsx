@@ -15,8 +15,7 @@ export default async function ProviderRedirectPage({ params }: { params: Promise
         This keeps the MVP honest while provider-specific handoff links are being configured.
       </p>
       <div className="button-row">
-        <Link className="button" href="/#lead-capture">Get update alerts</Link>
-        <Link className="button ghost" href="/">Search another address</Link>
+        <Link className="button" href="/">Search another address</Link>
       </div>
     </main>
   );

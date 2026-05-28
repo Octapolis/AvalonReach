@@ -1,6 +1,6 @@
 # Suggestions / Suggested Paths
 
-Last updated: 2026-05-25
+Last updated: 2026-05-27
 
 ## Active Suggestions
 
@@ -120,3 +120,33 @@ Why:
 
 - The live product already exists. Week 4 should stabilize and verify it before expanding.
 - This creates stronger final-report evidence and avoids masking existing issues with new work.
+
+### AR-S009 - Keep Get Updates as a future feature, not homepage clutter
+
+Source: `../working-notes/daily/2026-05-27.md`
+
+Suggestion:
+
+- Keep email/update capture available after a search through Save Search.
+- Treat broader deal alerts and provider-update notifications as a Week 5/6 retention feature.
+- Avoid restoring a full homepage update form while the homepage is being simplified.
+
+Why:
+
+- The homepage should stay search-first and low-clutter.
+- Update alerts are still valuable, but they fit better after the user has search context.
+
+### AR-S010 - Add a Help Me Choose guide
+
+Source: `../working-notes/daily/2026-05-27.md`
+
+Suggestion:
+
+- Add a small guided choice tool that asks what matters most: lowest bill, fastest speed, gaming/video calls, uploading/creator work, or unsure.
+- Map each answer to an existing priority mode.
+- Keep it optional and lightweight, either as a button beside the priority dropdown or as a compact modal.
+
+Why:
+
+- Users may not know whether to choose fastest, cheapest, upload, or gaming.
+- A guided picker would make the existing recommendation modes easier without adding new ranking logic.
