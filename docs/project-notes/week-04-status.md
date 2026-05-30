@@ -96,3 +96,15 @@ Priority matrix baseline result:
 ## Next Step
 
 Decide the controlled lead-capture test email, verify production Supabase writes, and run the multi-address public evidence pass.
+
+## Deployment Status Update: 2026-05-30
+
+Alex reported production still appeared stuck on an older version. Investigation found `public/main` was already at `798e453`, but `private/main` was still behind at `415ebcf`. Pushing `798e453` to `private/main` caused production to update; the homepage no longer showed old-build indicators such as the `Updates` nav link and `Example recommendation` card.
+
+Production smoke passed after the update with:
+
+```bash
+npm run smoke:deploy
+```
+
+Until Vercel's connected repository is confirmed, deployment-ready commits should be pushed to both `public/main` and `private/main`.

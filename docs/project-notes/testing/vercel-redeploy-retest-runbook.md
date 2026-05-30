@@ -2,18 +2,20 @@
 
 Purpose: get the pushed AvalonReach fixes live, then verify production with repeatable checks.
 
-Current pushed app-fix commit: `59d1458`  
-Current local smoke-test commit: `1e612f8`  
+Current pushed app-fix commit: `798e453`  
+Current local smoke-test commit: `798e453`  
 Production URL: https://avalon-reach.vercel.app/
 
 ## Situation
 
-GitHub `main` has the app fixes from commit `59d1458`. Vercel blocked earlier pushed commits when the Git author was `Ava <ava@openclaw.local>`, because that identity was treated as an external/team author instead of the GitHub project owner.
+GitHub `main` has the app fixes from commit `798e453`. Vercel blocked earlier pushed commits when the Git author was `Ava <ava@openclaw.local>`, because that identity was treated as an external/team author instead of the GitHub project owner.
 
 Vercel CLI on the OpenClaw box does not have saved credentials. It requested device login, so either:
 
 - Alex redeploys from the Vercel dashboard, or
 - Alex completes Vercel device login for this environment, then Ava can deploy from CLI.
+
+2026-05-30 update: production appeared stuck on an older build even though `public/main` was current. `private/main` was behind. Pushing `798e453` to `private/main` caused production to update, and `npm run smoke:deploy` passed. Until the connected Vercel repository is confirmed, push deployment-ready commits to both `public/main` and `private/main`.
 
 ## GitHub Author Preflight
 
