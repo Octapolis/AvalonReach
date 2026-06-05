@@ -56,15 +56,18 @@ Suggested fix:
 
 ### AR-I009 - Week 5 saved-results dashboard needs production setup
 
-Status: Open  
+Status: Partially fixed / production setup still open  
 Found: 2026-06-04  
-Source: `../working-notes/daily/2026-06-04.md`
+Source: `../working-notes/daily/2026-06-04.md`, `../working-notes/daily/2026-06-05.md`
 
 Description:
 
 - The email-based saved-results dashboard is implemented in code and build-verified.
+- The dashboard code was pushed to both deployment remotes in commit `081d19d`.
+- Production now serves the new `/dashboard` UI and `/api/saved-searches` route.
 - Production private lookup still needs the Week 5 Supabase migration and server-only Supabase service role key.
 - The app intentionally does not expose saved-search reads through the public Supabase anon key.
+- Live API currently returns `configured:false`, confirming the Vercel environment variable is missing.
 
 Suggested fix:
 

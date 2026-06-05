@@ -60,7 +60,7 @@ Then verify again with `git log -1 --format='%h %an <%ae> %s'`.
 2. Open the AvalonReach project.
 3. Go to Deployments.
 4. Find the latest GitHub commit on `main`.
-5. Confirm the deployment uses commit `59d1458` or newer.
+5. Confirm the deployment uses commit `081d19d` or newer.
 6. Click Redeploy if the latest commit is not already deployed.
 7. Wait for deployment to finish successfully.
 8. Tell Ava deployment is complete.
@@ -92,6 +92,20 @@ Once production deployment is complete:
 cd /home/ubuntu/openclaw-workspace/AvalonReach
 npm run smoke:deploy
 ```
+
+For the Week 5 dashboard, also verify:
+
+```bash
+curl -sS "https://avalon-reach.vercel.app/api/saved-searches?email=test@example.com"
+```
+
+Before `SUPABASE_SERVICE_ROLE_KEY` is added to Vercel, this should return:
+
+```json
+{"configured":false,"searches":[]}
+```
+
+After the Supabase migration and Vercel service-role environment variable are configured, run a controlled Save Search test and then check `/dashboard?email=...` in the browser.
 
 If testing another base URL:
 
