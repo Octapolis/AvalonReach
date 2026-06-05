@@ -3,6 +3,7 @@ import { createSupabaseClient } from "@/lib/supabase";
 import type { BroadbandLookupResult, GeocodeResult, ProviderPlan } from "./types";
 
 const CENSUS_GEOCODER_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress";
+const CENSUS_REVERSE_GEOCODER_URL = "https://geocoding.geo.census.gov/geocoder/geographies/coordinates";
 const BROADBAND_MAP_URL = "https://broadbandmap.com/api/v1/location/internet";
 
 type CensusResponse = {
@@ -12,6 +13,12 @@ type CensusResponse = {
       coordinates?: { x?: number; y?: number };
       addressComponents?: { zip?: string; city?: string; state?: string };
     }>;
+  };
+};
+
+type CensusReverseResponse = {
+  result?: {
+    geographies?: Record<string, Array<Record<string, string | number | null | undefined>>>;
   };
 };
 
@@ -98,10 +105,13 @@ export async function lookupBroadbandByAddress(address: string): Promise<Broadba
 
 export async function lookupBroadbandByCoordinates(lat: number, lng: number, addressLabel = "Current location"): Promise<BroadbandLookupResult> {
   try {
+    const resolvedLocationLabel = addressLabel === "Current location"
+      ? await reverseGeocodeCoordinates(lat, lng) ?? addressLabel
+      : addressLabel;
     const providers = await lookupProvidersByCoordinates(lat, lng);
     if (providers.length === 0) {
       return {
-        addressLabel,
+        addressLabel: resolvedLocationLabel,
         lat,
         lng,
         source: "live",
@@ -116,7 +126,7 @@ export async function lookupBroadbandByCoordinates(lat: number, lng: number, add
     }
 
     return {
-      addressLabel,
+      addressLabel: resolvedLocationLabel,
       lat,
       lng,
       source: "live",
@@ -124,7 +134,7 @@ export async function lookupBroadbandByCoordinates(lat: number, lng: number, add
       notices: [
         {
           level: "info",
-          message: "Availability is based on broadband map data near this location. Exact plans, pricing, and promos should be confirmed with the provider."
+          message: "Availability is based on broadband map data near the device location your browser shared. If your VPN or device location is wrong, enter the service address instead."
         }
       ]
     };
@@ -157,6 +167,37 @@ export async function geocodeAddress(address: string): Promise<GeocodeResult | n
     city: match?.addressComponents?.city,
     state: match?.addressComponents?.state
   };
+}
+
+export async function reverseGeocodeCoordinates(lat: number, lng: number): Promise<string | null> {
+  const url = new URL(CENSUS_REVERSE_GEOCODER_URL);
+  url.searchParams.set("x", String(lng));
+  url.searchParams.set("y", String(lat));
+  url.searchParams.set("benchmark", "Public_AR_Current");
+  url.searchParams.set("vintage", "Current_Current");
+  url.searchParams.set("format", "json");
+
+  const response = await fetch(url, { next: { revalidate: 60 * 60 * 24 } });
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as CensusReverseResponse;
+  const geographies = payload.result?.geographies;
+  if (!geographies) return null;
+
+  const place = firstGeography(geographies, "Incorporated Places") ?? firstGeography(geographies, "County Subdivisions");
+  const county = firstGeography(geographies, "Counties");
+  const state = firstGeography(geographies, "States");
+
+  const placeName = cleanCensusName(place?.NAME ?? place?.BASENAME);
+  const countyName = cleanCensusName(county?.NAME ?? county?.BASENAME);
+  const stateCode = typeof state?.STUSAB === "string" ? state.STUSAB : undefined;
+  const stateName = cleanCensusName(state?.NAME ?? state?.BASENAME);
+
+  if (placeName && stateCode) return `Device location near ${placeName}, ${stateCode}`;
+  if (countyName && stateCode) return `Device location near ${countyName}, ${stateCode}`;
+  if (placeName && stateName) return `Device location near ${placeName}, ${stateName}`;
+  if (countyName && stateName) return `Device location near ${countyName}, ${stateName}`;
+  return null;
 }
 
 export async function lookupProvidersByCoordinates(lat: number, lng: number): Promise<ProviderPlan[]> {
@@ -239,6 +280,18 @@ async function loadCatalogPlans(): Promise<ProviderPlan[]> {
       source: "sample"
     };
   });
+}
+
+function firstGeography(geographies: Record<string, Array<Record<string, string | number | null | undefined>>>, key: string) {
+  return geographies[key]?.[0];
+}
+
+function cleanCensusName(input: string | number | null | undefined) {
+  if (typeof input !== "string") return undefined;
+  return input
+    .replace(/\s+city$/i, "")
+    .replace(/\s+County$/i, " County")
+    .trim();
 }
 
 function normalizeTransportType(input: string | null | undefined): ProviderPlan["transportType"] {

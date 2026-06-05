@@ -1,6 +1,6 @@
 # Known Issues
 
-Last updated: 2026-05-26
+Last updated: 2026-06-04
 
 ## Open
 
@@ -53,6 +53,25 @@ Suggested fix:
 - Do not remove or downgrade existing built features just to match the report.
 - Explain that fastest-plan recommendation is the official MVP story while broader priority modes are existing expanded functionality that need testing and clearer copy.
 - Align `week-04-status.md`, final-report evidence, and UI copy after the decision.
+
+### AR-I009 - Week 5 saved-results dashboard needs production setup
+
+Status: Open  
+Found: 2026-06-04  
+Source: `../working-notes/daily/2026-06-04.md`
+
+Description:
+
+- The email-based saved-results dashboard is implemented in code and build-verified.
+- Production private lookup still needs the Week 5 Supabase migration and server-only Supabase service role key.
+- The app intentionally does not expose saved-search reads through the public Supabase anon key.
+
+Suggested fix:
+
+- Run `supabase/migrations/002_saved_results_dashboard.sql` in Supabase.
+- Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel environment variables.
+- Redeploy the app.
+- Save a controlled search and verify `/dashboard?email=...` returns that saved result.
 
 ## Fixed
 

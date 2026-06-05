@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AvalonReach Database Verification</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #102033;
+        --muted: #50637a;
+        --line: #d8e1eb;
+        --accent: #0c7c96;
+        --good: #137a4f;
+        --bg: #f7fafc;
+        --panel: #ffffff;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1120px, calc(100vw - 64px));
+        margin: 40px auto;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 10px 0 12px;
+        font-size: 48px;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .summary {
+        max-width: 840px;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.45;
+      }
+
+      .verdict {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 24px 0 28px;
+        padding: 12px 16px;
+        border: 1px solid #b7e4cc;
+        border-radius: 8px;
+        background: #ecfdf3;
+        color: var(--good);
+        font-weight: 800;
+      }
+
+      section {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .stamp {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      th,
+      td {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 15px;
+        line-height: 1.35;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        color: #1b4e63;
+        word-break: break-word;
+      }
+
+      .note {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">AvalonReach Week 4 Report 3 Evidence</div>
+      <h1>Production Database Verification</h1>
+      <p class="summary">
+        Supabase production writes were verified after a controlled Save Search
+        test. The email address is masked for evidence use, while the row
+        metadata proves the database write path is working.
+      </p>
+
+      <div class="verdict">Verified: production database writes are working</div>
+
+      <section>
+        <div class="section-head">
+          <h2>Lead Capture Row</h2>
+          <div class="stamp">Queried 2026-06-01 02:30:59 UTC</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Table</th>
+              <th>Created At</th>
+              <th>Evidence Fields</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>leads</code></td>
+              <td><code>2026-06-01T02:28:58.633731+00:00</code></td>
+              <td>
+                Email: <code>bo*******@mymail.champlain.edu</code><br />
+                Location hint: <code>Current location</code><br />
+                Intent: <code>results</code><br />
+                Consent: <code>true</code><br />
+                Source: <code>landing-page</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Search And Recommendation Writes</h2>
+          <div class="stamp">Recent production rows</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Table</th>
+              <th>Created At</th>
+              <th>Evidence Fields</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>searches</code></td>
+              <td><code>2026-06-01T02:21:24.029916+00:00</code></td>
+              <td>
+                Address label: <code>Current location</code><br />
+                Priority: <code>fastest</code><br />
+                Provider count: <code>13</code><br />
+                Data source: <code>live</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>search_areas</code></td>
+              <td><code>2026-06-01T02:21:23.92068+00:00</code></td>
+              <td>
+                Input: <code>Current location</code><br />
+                Normalized label: <code>Current location</code><br />
+                Source: <code>live</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>recommendations</code></td>
+              <td><code>2026-06-01T02:21:24.069215+00:00</code></td>
+              <td>
+                Priority: <code>fastest</code><br />
+                Source: <code>live</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <p class="note">
+        Full school email and Supabase credentials are intentionally excluded
+        from this evidence screenshot.
+      </p>
+    </main>
+  </body>
+</html>

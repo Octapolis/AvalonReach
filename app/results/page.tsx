@@ -10,6 +10,7 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
   const lat = parseCoordinate(value(params.lat));
   const lng = parseCoordinate(value(params.lng));
   const priority = normalizePriority(value(params.priority));
+  const usedDeviceLocation = lat !== null && lng !== null;
   const lookup = lat !== null && lng !== null
     ? await lookupBroadbandByCoordinates(lat, lng, address)
     : await lookupBroadbandByAddress(address);
@@ -21,6 +22,16 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
       <p className="eyebrow">Search results</p>
       <h1>Internet options for {lookup.addressLabel}</h1>
       <p className="hero-text">Showing ranked options for priority: {priority.replace("-", " ")}.</p>
+
+      {usedDeviceLocation && (
+        <section className="location-feedback">
+          <p className="eyebrow">Location used</p>
+          <h2>{lookup.addressLabel}</h2>
+          <p>
+            Your browser shared an approximate device location, not a typed service address. Device location can come from GPS, Wi-Fi, cell towers, or IP-based signals, and a VPN can make it wrong. For the most accurate internet results, search the address where service will be installed.
+          </p>
+        </section>
+      )}
 
       <div className="notice-stack">
         {lookup.notices.map((notice) => (
@@ -56,7 +67,7 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
           <h2>Save this search.</h2>
           <p>Keep the results available without making the main comparison page feel crowded.</p>
         </div>
-        <LeadCaptureForm defaultLocation={lookup.addressLabel} initiallyCollapsed />
+        <LeadCaptureForm defaultLocation={lookup.addressLabel} defaultPriority={priority} initiallyCollapsed />
       </section>
     </main>
   );

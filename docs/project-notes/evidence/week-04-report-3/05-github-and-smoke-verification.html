@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AvalonReach GitHub and Smoke Verification</title>
+    <style>
+      :root {
+        --bg: #f7fafc;
+        --panel: #ffffff;
+        --ink: #102033;
+        --muted: #52657a;
+        --line: #d8e1eb;
+        --accent: #0c7c96;
+        --good: #137a4f;
+        --code: #0e3448;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1120px, calc(100vw - 64px));
+        margin: 40px auto;
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 10px 0 12px;
+        font-size: 48px;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .summary {
+        max-width: 820px;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.45;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      section {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+
+      .section-head {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 10px;
+        padding: 8px 12px;
+        border: 1px solid #b7e4cc;
+        border-radius: 8px;
+        background: #ecfdf3;
+        color: var(--good);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      pre {
+        margin: 0;
+        padding: 20px;
+        color: var(--code);
+        font-size: 14px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      .note {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">AvalonReach Week 4 Report 3 Evidence</div>
+      <h1>Repository And Deployment Verification</h1>
+      <p class="summary">
+        This evidence shows that the latest project work is committed in GitHub
+        and that the deployed production site passed the AvalonReach smoke test.
+      </p>
+
+      <div class="grid">
+        <section>
+          <div class="section-head">
+            <h2>Production Smoke Test</h2>
+            <div class="status">Passed</div>
+          </div>
+          <pre>$ npm run smoke:deploy
+
+&gt; avalonreach@0.1.0 smoke:deploy
+&gt; node scripts/smoke-deploy.mjs
+
+Smoke test passed for https://avalon-reach.vercel.app</pre>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Current Branch State</h2>
+            <div class="status">Synced</div>
+          </div>
+          <pre>HEAD -&gt; main
+origin/main
+origin/HEAD
+vercel-target/main
+
+Latest commit:
+4d73b9b Record production deployment catch-up</pre>
+        </section>
+
+        <section class="full">
+          <div class="section-head">
+            <h2>Recent Git Activity</h2>
+          </div>
+          <pre>4d73b9b Record production deployment catch-up
+798e453 Simplify search flow and update milestones
+415ebcf Add remaining tasks review document
+f499634 Record production retest results
+f8e6d12 Document Vercel GitHub author preflight
+59d1458 Polish live broadband result cards
+f97bb7f Trigger Vercel deploy with GitHub author
+84c840b Merge Vercel repository history</pre>
+        </section>
+      </div>
+
+      <p class="note">
+        The smoke script verifies key live routes and production behavior,
+        including homepage/results/legal/handoff routes, POST-only search API
+        behavior, missing-price score labels, provider technology labels, and
+        MVP-honest handoff copy.
+      </p>
+    </main>
+  </body>
+</html>

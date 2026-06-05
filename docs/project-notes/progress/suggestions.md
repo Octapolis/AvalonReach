@@ -1,6 +1,6 @@
 # Suggestions / Suggested Paths
 
-Last updated: 2026-05-27
+Last updated: 2026-06-04
 
 ## Active Suggestions
 
@@ -150,3 +150,21 @@ Why:
 
 - Users may not know whether to choose fastest, cheapest, upload, or gaming.
 - A guided picker would make the existing recommendation modes easier without adding new ranking logic.
+
+### AR-S011 - Build Week 5 dashboard as email lookup first, username-ready later
+
+Source: `../working-notes/daily/2026-06-04.md`
+
+Suggestion:
+
+- Treat the Week 5 dashboard as a saved-results area, not a full account portal yet.
+- Start with email-based saved search lookup because it is simple, demonstrable, and lower-risk.
+- Design the data model so a stable internal user/profile ID can later support unique usernames.
+- Avoid tightly coupling every saved result to a single fragile email-only account record.
+
+Why:
+
+- Alex prefers email lookup for now but may want unique username creation later.
+- Emails can change, especially when users are moving or changing households.
+- A lightweight, stable profile design avoids brittle account-rebuild problems like the AT&T user-profile issues Alex described.
+- Full auth can be added later once the saved-results workflow is valuable enough to justify the extra complexity.

@@ -1,6 +1,6 @@
 # AvalonReach Week 1-7 Milestones
 
-Last updated: 2026-05-28
+Last updated: 2026-06-04
 
 Purpose: provide a clean course-facing milestone list from current state through final submission.
 
@@ -129,12 +129,15 @@ Planned scope:
 - Include a preview of what future newsletter content will cover.
 - Plug in at least one live provider handoff with a unique referral/tracking link to the provider site so AvalonReach can receive credit or attribution.
 - Decide whether the dashboard is email-based saved search or full auth.
+- Start dashboard with email-based saved search lookup unless a stronger account requirement appears.
+- Keep the saved-results model username-ready so unique usernames can be added later without rebuilding user profiles.
 - Add basic saved-search/dashboard behavior if schedule allows.
 - Add Help Me Choose as a compact guided picker if Week 4 evidence is stable.
 
 Recommended constraint:
 
 - Avoid heavy auth unless the evidence, Supabase verification, and screenshot work are already stable.
+- Avoid brittle account design: use a stable internal saved-user/profile ID, then attach email and later username as changeable identifiers.
 - Keep the autoresponder/newsletter flow small and testable. It should prove the product loop, not become a full marketing automation build.
 
 Done means:

@@ -4,9 +4,11 @@ import { useState } from "react";
 
 export function LeadCaptureForm({
   defaultLocation = "",
+  defaultPriority = "fastest",
   initiallyCollapsed = false
 }: {
   defaultLocation?: string;
+  defaultPriority?: string;
   initiallyCollapsed?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(!initiallyCollapsed);
@@ -37,6 +39,7 @@ export function LeadCaptureForm({
     <form className="lead-form" onSubmit={onSubmit}>
       <input name="email" type="email" placeholder="Email address" required />
       <input name="zip" placeholder="ZIP code, city, or searched address" defaultValue={defaultLocation} />
+      <input name="priority" type="hidden" value={defaultPriority} />
       <select name="intent" defaultValue="results">
         <option value="results">Send me my results</option>
         <option value="better-deals">Notify me about better deals</option>

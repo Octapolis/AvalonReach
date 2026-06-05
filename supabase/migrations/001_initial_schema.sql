@@ -72,10 +72,19 @@ create table if not exists public.leads (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.saved_users (
+  id uuid primary key default gen_random_uuid(),
+  username text,
+  primary_email text,
+  display_name text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 -- Legacy/search-event table kept so the existing MVP flow and dashboard notes do not break.
 create table if not exists public.searches (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid,
+  user_id uuid references public.saved_users(id) on delete set null,
   email text,
   address_label text not null,
   lat numeric,
@@ -103,7 +112,10 @@ create index if not exists plans_active_idx on public.plans (active);
 create index if not exists search_areas_created_at_idx on public.search_areas (created_at desc);
 create index if not exists recommendations_created_at_idx on public.recommendations (created_at desc);
 create index if not exists leads_email_idx on public.leads (email);
+create unique index if not exists saved_users_primary_email_idx on public.saved_users (lower(primary_email)) where primary_email is not null;
+create unique index if not exists saved_users_username_idx on public.saved_users (lower(username)) where username is not null;
 create index if not exists searches_created_at_idx on public.searches (created_at desc);
+create index if not exists searches_email_idx on public.searches (email);
 create index if not exists provider_links_slug_idx on public.provider_links (provider_slug);
 
 alter table public.providers enable row level security;
@@ -111,6 +123,7 @@ alter table public.plans enable row level security;
 alter table public.search_areas enable row level security;
 alter table public.recommendations enable row level security;
 alter table public.leads enable row level security;
+alter table public.saved_users enable row level security;
 alter table public.searches enable row level security;
 alter table public.provider_links enable row level security;
 
@@ -140,6 +153,12 @@ create policy "public insert leads"
   to anon, authenticated
   with check (consent = true and email <> '');
 
+drop policy if exists "public insert saved users" on public.saved_users;
+create policy "public insert saved users"
+  on public.saved_users for insert
+  to anon, authenticated
+  with check (primary_email is not null and primary_email <> '');
+
 drop policy if exists "public insert search areas" on public.search_areas;
 create policy "public insert search areas"
   on public.search_areas for insert
@@ -159,5 +178,6 @@ create policy "public insert searches"
   with check (address_label <> '');
 
 -- TODO(Alex/manual admin): seed real provider and plan rows after product direction is settled.
--- TODO(Alex/manual admin): add private owner/admin read policies when auth/dashboard scope is approved.
+-- TODO(Alex/manual admin): configure SUPABASE_SERVICE_ROLE_KEY on Vercel for private dashboard lookup.
+-- TODO(Alex/manual admin): add full auth policies later only if the saved-results workflow outgrows email lookup.
 -- TODO(Alex/manual admin): consider moving writes behind server-side validation if abuse/spam appears.
