@@ -1,4 +1,6 @@
 import { getSavedSearchesByEmail, normalizeLookupEmail } from "@/lib/saved-searches";
+import { RecentSearches } from "@/components/recent-searches";
+import Link from "next/link";
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
@@ -12,11 +14,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   });
 
   return (
-    <main className="section narrow">
-      <p className="eyebrow">Saved results dashboard</p>
-      <h1>Your saved internet searches</h1>
+    <main className="section narrow dashboard-page">
+      <p className="eyebrow">Results page</p>
+      <h1>Your saved internet results</h1>
       <p className="hero-text">
-        Look up saved AvalonReach results by email. This keeps Week 5 simple while leaving room for unique usernames later.
+        Enter the email you used to save a search, reopen recommendations, or start another address search.
       </p>
 
       <form className="lookup-form" action="/dashboard">
@@ -24,16 +26,28 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         <button type="submit">Find saved results</button>
       </form>
 
-      <section className="identity-note">
-        <p className="eyebrow">Username-ready design</p>
-        <p>
-          Email is the first lookup method, but saved results should live under a stable internal profile. Later, a username can be added without rebuilding the account if an email changes.
-        </p>
+      <div className="button-row">
+        <Link className="button ghost compact" href="/">Search again</Link>
+      </div>
+
+      <section className="dashboard-assurance" aria-label="Saved results details">
+        <div>
+          <span>Private lookup</span>
+          <p>Only searches saved with this email are shown.</p>
+        </div>
+        <div>
+          <span>Fast return</span>
+          <p>Reopen results without starting a new comparison.</p>
+        </div>
+        <div>
+          <span>No account required</span>
+          <p>Save and revisit results when you are ready.</p>
+        </div>
       </section>
 
       {lookup && !lookup.configured && (
         <div className="notice warning">
-          Saved-search lookup is designed, but production needs the server-only Supabase key before private dashboard reads are enabled.
+          Saved-result lookup is temporarily unavailable. Please try again shortly.
         </div>
       )}
 
@@ -56,13 +70,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <span>{search.dataSource}</span>
                 <span>{formatter.format(new Date(search.createdAt))}</span>
               </div>
-              <a className="button ghost compact" href={`/results?address=${encodeURIComponent(search.addressLabel)}&priority=${encodeURIComponent(search.priority)}`}>
+              <Link className="button ghost compact" href={`/results?address=${encodeURIComponent(search.addressLabel)}&priority=${encodeURIComponent(search.priority)}`}>
                 Reopen results
-              </a>
+              </Link>
             </article>
           ))}
         </div>
       )}
+
+      <RecentSearches />
     </main>
   );
 }

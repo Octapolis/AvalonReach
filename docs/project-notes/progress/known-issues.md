@@ -1,12 +1,12 @@
 # Known Issues
 
-Last updated: 2026-06-04
+Last updated: 2026-06-07
 
 ## Open
 
 ### AR-I004 - Production Supabase behavior needs verification
 
-Status: Open  
+Status: Fixed  
 Found: 2026-05-23  
 Source: `../working-notes/daily/2026-05-23.md`
 
@@ -14,15 +14,16 @@ Description:
 
 - Schema and seed files exist, but production reads/writes still need direct verification.
 
-Suggested fix:
+Fix:
 
-- Verify catalog reads.
-- Verify search and recommendation inserts.
-- Use a controlled test email before testing lead capture.
+- On 2026-06-07, production `/api/saved-searches?email=test@example.com` returned `{"configured":true,"searches":[]}` after Vercel picked up the Supabase service role key.
+- A controlled production lead/save-search request returned `{"ok":true,"stored":true}`.
+- Production `/api/saved-searches` returned the saved row for the controlled test email.
+- `npm run smoke:deploy -- https://avalon-reach.vercel.app` passed.
 
 ### AR-I005 - Lead capture not yet tested on production
 
-Status: Open  
+Status: Fixed  
 Found: 2026-05-25  
 Source: `../working-notes/daily/2026-05-25.md`
 
@@ -30,11 +31,11 @@ Description:
 
 - Lead form route exists, but production storage was not tested in the first live smoke test.
 
-Suggested fix:
+Fix:
 
-- Decide a controlled test email.
-- Submit one production lead test.
-- Verify the row appears in Supabase.
+- A controlled production lead/save-search test was submitted on 2026-06-07.
+- The API returned `stored:true`.
+- The saved search was readable through the production saved-results API for the controlled email.
 
 ### AR-I006 - Official MVP framing and visible recommendation modes need alignment
 
@@ -56,7 +57,7 @@ Suggested fix:
 
 ### AR-I009 - Week 5 saved-results dashboard needs production setup
 
-Status: Partially fixed / production setup still open  
+Status: Fixed / polish ongoing  
 Found: 2026-06-04  
 Source: `../working-notes/daily/2026-06-04.md`, `../working-notes/daily/2026-06-05.md`
 
@@ -65,16 +66,15 @@ Description:
 - The email-based saved-results dashboard is implemented in code and build-verified.
 - The dashboard code was pushed to both deployment remotes in commit `081d19d`.
 - Production now serves the new `/dashboard` UI and `/api/saved-searches` route.
-- Production private lookup still needs the Week 5 Supabase migration and server-only Supabase service role key.
 - The app intentionally does not expose saved-search reads through the public Supabase anon key.
-- Live API currently returns `configured:false`, confirming the Vercel environment variable is missing.
+- Production private lookup now has the required server-only Supabase service role key and returns `configured:true`.
 
-Suggested fix:
+Fix:
 
-- Run `supabase/migrations/002_saved_results_dashboard.sql` in Supabase.
-- Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel environment variables.
-- Redeploy the app.
-- Save a controlled search and verify `/dashboard?email=...` returns that saved result.
+- Alex confirmed the Vercel Supabase environment variables were configured for Production and redeployed.
+- Production saved-results API returned `configured:true`.
+- A controlled Save Search test was stored and then returned by `/api/saved-searches?email=...`.
+- Follow-up polish is renaming the user-facing dashboard concept to results-page language, adding Search Again, and showing recent on-device searches.
 
 ## Fixed
 

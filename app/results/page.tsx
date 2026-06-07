@@ -3,6 +3,7 @@ import { lookupBroadbandByAddress, lookupBroadbandByCoordinates } from "@/lib/br
 import { saveSearch } from "@/lib/persistence";
 import { rankProviders } from "@/lib/recommendation";
 import type { UserPriority } from "@/lib/types";
+import Link from "next/link";
 
 export default async function ResultsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
@@ -15,6 +16,7 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
     ? await lookupBroadbandByCoordinates(lat, lng, address)
     : await lookupBroadbandByAddress(address);
   const ranked = rankProviders(lookup.providers, priority);
+  const resultStatus = getResultStatus(lookup.source, usedDeviceLocation);
   await saveSearch({ lookup, priority, rankedPlans: ranked });
 
   return (
@@ -22,6 +24,16 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
       <p className="eyebrow">Search results</p>
       <h1>Internet options for {lookup.addressLabel}</h1>
       <p className="hero-text">Showing ranked options for priority: {priority.replace("-", " ")}.</p>
+      <div className="button-row">
+        <Link className="button ghost compact" href="/">Search again</Link>
+        <Link className="button ghost compact" href="/dashboard">Saved results</Link>
+      </div>
+
+      <section className={`result-status ${resultStatus.level}`} aria-label="Search status">
+        <p className="eyebrow">{resultStatus.eyebrow}</p>
+        <h2>{resultStatus.title}</h2>
+        <p>{resultStatus.message}</p>
+      </section>
 
       {usedDeviceLocation && (
         <section className="location-feedback">
@@ -86,4 +98,24 @@ function parseCoordinate(input: string | undefined) {
   if (!input) return null;
   const value = Number(input);
   return Number.isFinite(value) ? value : null;
+}
+
+function getResultStatus(source: "live" | "sample" | "fallback", usedDeviceLocation: boolean) {
+  if (source === "live") {
+    return {
+      level: "success",
+      eyebrow: "Address found",
+      title: usedDeviceLocation ? "Success: found options near your device location." : "Success: found these options at your address.",
+      message: usedDeviceLocation
+        ? "These recommendations are based on the approximate location your browser shared. Search the service address for the most accurate result."
+        : "These recommendations are based on the verified address match used for this lookup. Confirm exact plans, prices, and installation details with the provider."
+    };
+  }
+
+  return {
+    level: "warning",
+    eyebrow: "Address not found",
+    title: "Address not found. Displaying top regional options.",
+    message: "AvalonReach could not verify that exact address through the live lookup, so this page is showing fallback options while keeping the comparison useful. Future partner recommendations can plug into this same area once they are configured."
+  };
 }

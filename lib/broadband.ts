@@ -145,6 +145,18 @@ export async function lookupBroadbandByCoordinates(lat: number, lng: number, add
 }
 
 export async function geocodeAddress(address: string): Promise<GeocodeResult | null> {
+  const matches = await geocodeAddressMatches(address);
+  return matches[0] ?? null;
+}
+
+export async function suggestAddresses(address: string): Promise<GeocodeResult[]> {
+  const trimmed = address.trim();
+  if (trimmed.length < 8) return [];
+
+  return geocodeAddressMatches(trimmed);
+}
+
+async function geocodeAddressMatches(address: string): Promise<GeocodeResult[]> {
   const url = new URL(CENSUS_GEOCODER_URL);
   url.searchParams.set("address", address);
   url.searchParams.set("benchmark", "Public_AR_Current");
@@ -154,19 +166,24 @@ export async function geocodeAddress(address: string): Promise<GeocodeResult | n
   if (!response.ok) throw new Error(`Census geocoder failed: ${response.status}`);
 
   const payload = (await response.json()) as CensusResponse;
-  const match = payload.result?.addressMatches?.[0];
-  const lat = match?.coordinates?.y;
-  const lng = match?.coordinates?.x;
-  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  const matches: GeocodeResult[] = [];
 
-  return {
-    addressLabel: match?.matchedAddress ?? address,
-    lat,
-    lng,
-    zip: match?.addressComponents?.zip,
-    city: match?.addressComponents?.city,
-    state: match?.addressComponents?.state
-  };
+  for (const match of payload.result?.addressMatches ?? []) {
+    const lat = match.coordinates?.y;
+    const lng = match.coordinates?.x;
+    if (typeof lat !== "number" || typeof lng !== "number") continue;
+
+    matches.push({
+      addressLabel: match.matchedAddress ?? address,
+      lat,
+      lng,
+      zip: match.addressComponents?.zip,
+      city: match.addressComponents?.city,
+      state: match.addressComponents?.state
+    });
+  }
+
+  return matches;
 }
 
 export async function reverseGeocodeCoordinates(lat: number, lng: number): Promise<string | null> {

@@ -1,6 +1,6 @@
 # AvalonReach Week 1-7 Milestones
 
-Last updated: 2026-06-04
+Last updated: 2026-06-07
 
 Purpose: provide a clean course-facing milestone list from current state through final submission.
 
@@ -109,7 +109,7 @@ Done means:
 
 ## Week 5 - Email Follow-Up, Referral Link, And Light Retention
 
-Status: Pending
+Status: In progress
 
 Milestone:
 
@@ -118,6 +118,9 @@ Milestone:
 Planned scope:
 
 - Improve Save Search after results.
+- Present the saved-search area as a results page instead of a generic dashboard.
+- Add a Search Again action to the saved-results/results page.
+- Add temporary browser-side recent-search history so a user can reopen searches made on the same device.
 - Keep Get Updates as a post-search feature, not homepage clutter.
 - Add email autoresponder flow.
 - Add double opt-in setup for newsletter/update consent.
@@ -133,6 +136,17 @@ Planned scope:
 - Keep the saved-results model username-ready so unique usernames can be added later without rebuilding user profiles.
 - Add basic saved-search/dashboard behavior if schedule allows.
 - Add Help Me Choose as a compact guided picker if Week 4 evidence is stable.
+
+Completed so far:
+
+- Email-based saved-results lookup implemented.
+- Production Vercel service-role environment variable verified after redeploy.
+- Controlled production Save Search test verified: the lead route stored the row and the saved-results API returned it.
+- User-facing navigation now says `Results` instead of `Dashboard`.
+- Saved-results page includes a Search Again button.
+- Recent searches are cached temporarily in the browser and shown on the saved-results page.
+- Address search now has a Census-backed verification suggestion helper once enough address text is entered.
+- Search results now include a Search Again action, a Saved Results action, and clear success/fallback status messaging.
 
 Recommended constraint:
 
