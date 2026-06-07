@@ -24,6 +24,9 @@ h1 { font-size: clamp(2.4rem, 7vw, 5rem); line-height: .92; letter-spacing: -.07
 h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.05em; margin: 0 0 14px; }
 h3 { margin: 0 0 8px; }
 .hero-text { color: var(--muted); font-size: 1.18rem; max-width: 680px; }
+.results-title { display: grid; gap: 10px; max-width: 980px; line-height: 1.06; letter-spacing: -.025em; }
+.results-title span { display: block; font-size: clamp(1.8rem, 3.4vw, 3rem); font-weight: 800; color: rgba(238,246,255,.92); }
+.results-title strong { display: block; font-size: clamp(2.05rem, 4.6vw, 4.05rem); font-weight: 800; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .search-card, .lead-form, .lookup-form, .score-card, .provider-card, .steps article, .empty-state, .identity-note, .saved-search-card, .location-feedback, .result-status { background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 24px 80px rgba(0,0,0,.22); }
 .search-card { display:grid; grid-template-columns: minmax(220px, 1fr) minmax(180px, .45fr) auto; gap: 12px; padding: 12px; margin: 26px auto 0; }
 .search-card-expanded { grid-template-columns: minmax(240px, 1fr) minmax(132px, .28fr) auto auto; }

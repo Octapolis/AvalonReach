@@ -22,7 +22,10 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
   return (
     <main className="section">
       <p className="eyebrow">Search results</p>
-      <h1>Internet options for {lookup.addressLabel}</h1>
+      <h1 className="results-title">
+        <span>Internet options for</span>
+        <strong>{lookup.addressLabel}</strong>
+      </h1>
       <p className="hero-text">Showing ranked options for priority: {priority.replace("-", " ")}.</p>
       <div className="button-row">
         <Link className="button ghost compact" href="/">Search again</Link>
