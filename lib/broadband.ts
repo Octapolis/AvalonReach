@@ -1,4 +1,5 @@
 import { sampleResults } from "@/data/sample-results";
+import { providerDirectoryEntry, providerDisplayName, providerHandoffUrl } from "@/lib/provider-directory";
 import { createSupabaseClient } from "@/lib/supabase";
 import type { BroadbandLookupResult, GeocodeResult, ProviderPlan } from "./types";
 
@@ -229,15 +230,22 @@ export async function lookupProvidersByCoordinates(lat: number, lng: number): Pr
   const payload = (await response.json()) as BroadbandMapResponse;
   return (payload.providers ?? [])
     .filter((provider) => provider.name && provider.technology)
-    .map((provider) => ({
-      name: provider.name ?? "Unknown provider",
-      technology: provider.technology ?? "Unknown",
-      maxDownloadMbps: Number(provider.max_download_mbps ?? 0),
-      maxUploadMbps: Number(provider.max_upload_mbps ?? 0),
-      providerId: provider.provider_id,
-      referralUrl: providerReferralUrl(provider.name),
-      source: "live" as const
-    }));
+    .map((provider) => {
+      const providerName = providerDisplayName(provider.name);
+      const directoryEntry = providerDirectoryEntry(provider.name);
+
+      return {
+        name: providerName,
+        providerName,
+        technology: provider.technology ?? "Unknown",
+        maxDownloadMbps: Number(provider.max_download_mbps ?? 0),
+        maxUploadMbps: Number(provider.max_upload_mbps ?? 0),
+        providerId: provider.provider_id,
+        referralUrl: providerHandoffUrl(provider.name),
+        notes: directoryEntry?.sourceNote,
+        source: "live" as const
+      };
+    });
 }
 
 async function fallbackResult(addressLabel: string, reason: string): Promise<BroadbandLookupResult> {
@@ -292,7 +300,7 @@ async function loadCatalogPlans(): Promise<ProviderPlan[]> {
         plan.estimated_monthly_price === null ? undefined : Number(plan.estimated_monthly_price),
       estimatedLatencyMs: plan.estimated_latency_ms ?? undefined,
       notes: plan.availability_notes ?? undefined,
-      referralUrl: plan.referral_url ?? providerReferralUrl(providerName),
+      referralUrl: plan.referral_url ?? providerHandoffUrl(providerName),
       contractRequired: Boolean(plan.contract_required),
       source: "sample"
     };
@@ -326,10 +334,4 @@ function normalizeTransportType(input: string | null | undefined): ProviderPlan[
   }
 
   return "unknown";
-}
-
-function providerReferralUrl(providerName?: string) {
-  if (!providerName) return "#lead-capture";
-  const slug = providerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  return `/go/${slug}`;
 }
