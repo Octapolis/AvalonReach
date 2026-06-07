@@ -63,6 +63,10 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
                 <h3>{provider.planName ?? `${provider.name} ${provider.transportLabel}`}</h3>
                 <span>{index === 0 ? "Recommended" : provider.scoreLabel}</span>
               </div>
+              <div className="source-row" aria-label="Result data confidence">
+                <span className={`source-pill ${provider.source ?? lookup.source}`}>{sourceLabel(provider.source ?? lookup.source)}</span>
+                <span>{confidenceLabel(provider.source ?? lookup.source)}</span>
+              </div>
               <p className="speed">{provider.maxDownloadMbps} Mbps down / {provider.maxUploadMbps} Mbps up</p>
               <p className="price-line">{provider.priceLabel}</p>
               <p>{provider.name} • {provider.transportLabel} {provider.contractRequired ? "• Contract may apply" : ""}</p>
@@ -122,4 +126,16 @@ function getResultStatus(source: "live" | "sample" | "fallback", usedDeviceLocat
     title: "Address not found. Displaying top regional options.",
     message: "AvalonReach could not verify that exact address through the live lookup, so this page is showing fallback options while keeping the comparison useful. Future partner recommendations can plug into this same area once they are configured."
   };
+}
+
+function sourceLabel(source: "live" | "sample" | "fallback") {
+  if (source === "live") return "Live availability data";
+  if (source === "fallback") return "Regional fallback";
+  return "Sample catalog";
+}
+
+function confidenceLabel(source: "live" | "sample" | "fallback") {
+  if (source === "live") return "Shown for the matched address. Confirm plan details with the provider.";
+  if (source === "fallback") return "Not exact-address verified. Use as a regional starting point.";
+  return "Demo data only. Replace with verified provider data before relying on it.";
 }

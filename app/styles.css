@@ -48,6 +48,10 @@ input, select { width: 100%; border: 1px solid var(--line); background: rgba(0,0
 .steps span { display:inline-grid; place-items:center; width: 34px; height: 34px; border-radius: 999px; background: rgba(98,217,255,.15); color: var(--cyan); font-weight: 900; margin-bottom: 16px; }
 .provider-topline { display:flex; justify-content:space-between; gap: 12px; align-items:start; }
 .provider-topline span { color: var(--gold); font-size: .85rem; }
+.source-row { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .84rem; line-height: 1.35; margin: 10px 0 14px; }
+.source-pill { display: inline-flex; align-items: center; flex: 0 0 auto; border: 1px solid rgba(98,217,255,.35); border-radius: 999px; padding: 5px 9px; color: var(--cyan); font-weight: 800; background: rgba(98,217,255,.09); }
+.source-pill.fallback { border-color: rgba(248,198,106,.5); color: var(--gold); background: rgba(248,198,106,.1); }
+.source-pill.sample { border-color: rgba(255,255,255,.22); color: var(--muted); background: rgba(255,255,255,.06); }
 .speed { color: var(--cyan); font-weight: 800; }
 .price-line { color: var(--gold); font-weight: 800; }
 .fine-print { color: var(--muted); font-size: .9rem; }

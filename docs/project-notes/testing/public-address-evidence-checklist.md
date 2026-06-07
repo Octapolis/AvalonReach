@@ -51,16 +51,25 @@ Fill this in during live testing after deployment.
 
 | Date | ID | Priority | Provider Count | Top Provider / Transport | Price Status | Duplicate Behavior | Notices | Screenshot | Issue Update |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TBD | AR-E001 | `best-value` | TBD | TBD | TBD | TBD | TBD | No | TBD |
+| 2026-06-07 | AR-E001 | `best-value` | 11 | Verizon / Fiber / FTTP | Unavailable | Clear transport label | Live broadband map notice shown | No | none |
 | TBD | AR-E001 | `fastest` | TBD | TBD | TBD | TBD | TBD | No | TBD |
-| TBD | AR-E002 | `best-value` | TBD | TBD | TBD | TBD | TBD | No | TBD |
+| 2026-06-07 | AR-E002 | `best-value` | 13 | Verizon / Fiber / FTTP | Unavailable | Clear transport label | Live broadband map notice shown | No | none |
 | TBD | AR-E002 | `fastest` | TBD | TBD | TBD | TBD | TBD | No | TBD |
-| TBD | AR-E003 | `best-value` | TBD | TBD | TBD | TBD | TBD | No | TBD |
+| 2026-06-07 | AR-E003 | `best-value` | 13 | AT&T / Fiber / FTTP | Unavailable | Clear transport label | Live broadband map notice shown | No | none |
 | TBD | AR-E003 | `fastest` | TBD | TBD | TBD | TBD | TBD | No | TBD |
 | TBD | AR-E004 | `best-value` | TBD | TBD | TBD | TBD | TBD | No | TBD |
 | TBD | AR-E004 | `fastest` | TBD | TBD | TBD | TBD | TBD | No | TBD |
-| TBD | AR-E005 | `best-value` | TBD | TBD | TBD | TBD | TBD | No | TBD |
+| 2026-06-07 | AR-E005 | `best-value` | 16 | Google Fiber / Fiber / FTTP | Unavailable | Clear transport label | Live broadband map notice shown | No | none |
 | TBD | AR-E005 | `fastest` | TBD | TBD | TBD | TBD | TBD | No | TBD |
+| 2026-06-07 | AR-E010 | `best-value` | 10 | CableWave / Cable / DOCSIS | Listed sample price | Not applicable | Fallback shown because Census did not geocode exact public landmark string | No | Follow up: improve rural/public-landmark fallback clarity |
+
+## 2026-06-07 Quick Data-Flow Notes
+
+- Production smoke test passed for `https://avalon-reach.vercel.app`.
+- Address suggestions returned normalized Census matches for AR-E001, AR-E002, AR-E003, and AR-E005.
+- `/api/search` returned `source: live` for AR-E001, AR-E002, AR-E003, and AR-E005.
+- AR-E010 returned `source: fallback` because the Census geocoder did not match `1 Mammoth Cave Pkwy, Mammoth Cave, KY 42259`.
+- The next data-quality pass should focus on fallback clarity, pricing/source labels, provider/referral URLs, and screenshots.
 
 ## Minimum Evidence Target
 
