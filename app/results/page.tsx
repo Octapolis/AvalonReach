@@ -32,6 +32,7 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
       <section className={`result-status ${resultStatus.level}`} aria-label="Search status">
         <p className="eyebrow">{resultStatus.eyebrow}</p>
         <h2>{resultStatus.title}</h2>
+        <p className="matched-address">{lookup.addressLabel}</p>
         <p>{resultStatus.message}</p>
       </section>
 

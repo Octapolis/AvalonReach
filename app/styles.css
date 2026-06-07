@@ -75,6 +75,7 @@ input, select { width: 100%; border: 1px solid var(--line); background: rgba(0,0
 .result-status.success { border-color: rgba(141,245,190,.4); }
 .result-status.warning { border-color: rgba(248,198,106,.45); }
 .result-status h2 { font-size: 1.35rem; letter-spacing: 0; margin-bottom: 8px; }
+.result-status .matched-address { color: var(--text); font-weight: 800; margin: 0 0 10px; }
 .result-status p:last-child { color: var(--muted); margin-bottom: 0; }
 .location-feedback { padding: 18px; margin: 22px 0; }
 .location-feedback h2 { font-size: 1.35rem; letter-spacing: 0; margin-bottom: 8px; }
