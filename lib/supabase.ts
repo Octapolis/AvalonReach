@@ -20,4 +20,13 @@ export function createSupabaseClient() {
   });
 }
 
+export function createSupabaseServerClient() {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SECRET_KEY;
+  if (!supabaseUrl || !serviceRoleKey) return null;
+
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false }
+  });
+}
+
 export const supabaseProjectRef = process.env.SUPABASE_PROJECT_REF ?? process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF;

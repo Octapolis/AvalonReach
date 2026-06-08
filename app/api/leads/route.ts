@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createSupabaseClient } from "@/lib/supabase";
+import { createSupabaseServerClient } from "@/lib/supabase";
 
 const LeadSchema = z.object({
   email: z.string().email(),
@@ -12,7 +12,7 @@ const LeadSchema = z.object({
 
 export async function POST(request: Request) {
   const lead = LeadSchema.parse(await request.json());
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseServerClient();
   const email = lead.email.trim().toLowerCase();
 
   if (supabase) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       primary_email: email
     });
 
-    if (savedUserError && savedUserError.code !== "23505") {
+    if (savedUserError && savedUserError.code !== "23505" && savedUserError.code !== "PGRST205") {
       console.error("saved_users insert failed", savedUserError);
     }
 

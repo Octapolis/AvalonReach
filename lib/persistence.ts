@@ -1,5 +1,5 @@
 import type { BroadbandLookupResult, RankedProviderPlan, UserPriority } from "./types";
-import { createSupabaseClient } from "./supabase";
+import { createSupabaseServerClient } from "./supabase";
 
 export async function saveSearch(params: {
   lookup: BroadbandLookupResult;
@@ -7,7 +7,7 @@ export async function saveSearch(params: {
   email?: string | null;
   rankedPlans?: RankedProviderPlan[];
 }) {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseServerClient();
   if (!supabase) return { stored: false, reason: "supabase-not-configured" } as const;
 
   const searchAreaId = crypto.randomUUID();
