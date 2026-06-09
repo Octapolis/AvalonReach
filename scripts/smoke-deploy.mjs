@@ -42,7 +42,7 @@ check(!resultsHtml.includes("0.0 Mbps per dollar"), "results page avoids fake Mb
 check(!resultsHtml.includes("Score 0"), "results page avoids raw zero score");
 
 const handoffHtml = await textFetch(`${baseUrl}/go/verizon`);
-check(handoffHtml.includes("does not have a live referral link"), "handoff explains referral link is not live");
+check(handoffHtml.includes("not a paid referral link yet"), "handoff explains referral link is not live");
 check(handoffHtml.includes("confirm availability, monthly price, promos"), "handoff tells user to confirm provider details");
 check(handoffHtml.includes("Search another address"), "handoff includes search fallback action");
 
